@@ -1,0 +1,2 @@
+Resize makes screen black. Need to trigger draw on window resize
+Hiding binding box doesn't actually hide binding box. Causes all sorts of problems. Just make it black? 
