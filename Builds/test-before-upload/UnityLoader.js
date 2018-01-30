@@ -27,6 +27,30 @@ function nextPow2( aSize ){
 
 firstImage = fpb.pathToImages + "/" + fpb.imagePrefix + fpb.numberingFormat + ".png";
 
+function debounce(func, wait, immediate) {
+  // Debounce function from https://john-dugan.com/javascript-debounce/
+    var timeout;
+    return function() {
+        var context = this,
+            args = arguments;
+        var later = function() {
+            timeout = null;
+            if ( !immediate ) {
+                func.apply(context, args);
+            }
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait || 200);
+        if ( callNow ) {
+            func.apply(context, args);
+        }
+    };
+};
+
+window.addEventListener('resize', debounce(function(){fpcanvas.SendMessage("Main Camera", "TriggerRenderer")}, 200));
+
+
 var img = new Image();
 
 img.onload = function(){

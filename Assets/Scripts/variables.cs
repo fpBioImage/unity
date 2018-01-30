@@ -24,6 +24,7 @@ public class variables : MonoBehaviour {
 	private static bool freezeMouse = true;
 	private static bool freezeAll = false;
 	private static bool jamesMode = false;
+	private static bool vr = false;
 
 	public static bool showBindingBox = true;
 	public static bool sectionMode = false;
@@ -31,9 +32,11 @@ public class variables : MonoBehaviour {
 	public static bool loadBookmarkFromURL = false;
 	public static bool bookmarkHover = true;
 
-	public static bool offlineMode = false;
+	public static bool offlineMode = true;
 	public static bool loadAtlasDirectly = false;
 	public static bool pngMode = true;
+
+	
 
 	// config strings
 	public static string pathToImages;
@@ -106,6 +109,10 @@ public class variables : MonoBehaviour {
 
 	public static string getMenuCameraTarget(){
 		return menuCameraTarget;
+	}
+
+	public static bool getVR() {
+		return vr;
 	}
 
 	public static void toggleFreezeMouse(){

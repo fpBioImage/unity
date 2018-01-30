@@ -85,7 +85,7 @@ public class bookmarker : MonoBehaviour {
 				"if (!results) return null;" +
 				"if (!results[2]) return '';" +
 				"return decodeURIComponent(results[2].replace(/\\+/g, ' ')); }" +
-				"SendMessage('Main Camera', 'setURLbookmarkString', getParameterByName('b'));" );
+				"fpcanvas.SendMessage('Main Camera', 'setURLbookmarkString', getParameterByName('b'));" );
 
 			loadBookmarkFromString (variables.getViewMemory());
 		} else {
@@ -350,7 +350,7 @@ public class bookmarker : MonoBehaviour {
 						"pageURL = pageHref.substring(0, bLoc);}" +
 		                "else {" +
 		                "pageURL = pageHref;}" +
-						"SendMessage('Main Camera', 'setPageURL', pageURL);";
+						"fpcanvas.SendMessage('Main Camera', 'setPageURL', pageURL);";
 
 		Application.ExternalEval (evalMe);
 
@@ -386,7 +386,7 @@ public class bookmarker : MonoBehaviour {
 		string evalMe = "var cookieString = localStorage.getItem('bookmark" + bookmarkID + "');" +
 		                "if (cookieString == null){" +
 						"cookieString = 'Could not find bookmark " + bookmarkNumber + "';}" +
-		                "SendMessage('Main Camera', 'setCookieString', cookieString);";
+						"fpcanvas.SendMessage('Main Camera', 'setCookieString', cookieString);";
 
 		Application.ExternalEval (evalMe);
 

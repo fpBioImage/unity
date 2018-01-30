@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 5cd2865fdb593d648bac6d1e6c34f119
+timeCreated: 1517249215
+licenseType: Pro
+ShaderImporter:
+  defaultTextures:
+  - _Atlas0: {fileID: 2800000, guid: 73fb81c6f6ea64096bdc3f2cd9972437, type: 3}
+  - _Atlas1: {fileID: 2800000, guid: 73fb81c6f6ea64096bdc3f2cd9972437, type: 3}
+  - _Atlas2: {fileID: 2800000, guid: 73fb81c6f6ea64096bdc3f2cd9972437, type: 3}
+  - _Atlas3: {fileID: 2800000, guid: 73fb81c6f6ea64096bdc3f2cd9972437, type: 3}
+  - _Atlas4: {fileID: 2800000, guid: 73fb81c6f6ea64096bdc3f2cd9972437, type: 3}
+  - _Atlas5: {fileID: 2800000, guid: 73fb81c6f6ea64096bdc3f2cd9972437, type: 3}
+  - _Atlas6: {fileID: 2800000, guid: 73fb81c6f6ea64096bdc3f2cd9972437, type: 3}
+  - _Atlas7: {fileID: 2800000, guid: 73fb81c6f6ea64096bdc3f2cd9972437, type: 3}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
