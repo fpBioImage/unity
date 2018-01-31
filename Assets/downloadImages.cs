@@ -11,6 +11,8 @@ public class downloadImages : MonoBehaviour {
 	public GameObject infoBox;
 	public Text infoText;
 	public GameObject qualityButton;
+	public GameObject qualityBox;
+	public GameObject fullScreenQuad;
 
 	public bool offlineMode = false;
 	public bool atlasMode = true;
@@ -269,18 +271,18 @@ public class downloadImages : MonoBehaviour {
 				if (changingQuality && Input.GetKey (KeyCode.Mouse0)) {
 					infoBox.SetActive (false);
 					// AND THEN OPEN quality changer
-					print("Opening quality changer");
-
+					qualityBox.SetActive(true);
 				} else {
 					infoBox.SetActive (false);
 				}
+				// Off you go! 
+				volumeReady = false;
 			}
 		}
 	}
 
 	public void setChangingQuality(bool mouseIn){
 		changingQuality = mouseIn;
-		print("Mouse is " + mouseIn);
 	}
 
 	// Set variables for online mode

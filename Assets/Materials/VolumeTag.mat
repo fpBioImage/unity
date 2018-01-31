@@ -85,7 +85,7 @@ Material:
     - _Intensity: 0.63
     - _Interp: 1
     - _Opacity: 1.85
-    - _RenderMode: 1.22
+    - _RenderMode: 1
     - _Steps: 128
     - _StretchPower: 1
     m_Colors:

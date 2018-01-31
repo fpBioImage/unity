@@ -48,7 +48,7 @@ function debounce(func, wait, immediate) {
     };
 };
 
-window.addEventListener('resize', debounce(function(){fpcanvas.SendMessage("Main Camera", "TriggerRenderer")}, 200));
+window.addEventListener('resize', debounce(function(){fpcanvas.SendMessage("Full Screen Quad", "updateQuality")}, 200));
 
 
 var img = new Image();

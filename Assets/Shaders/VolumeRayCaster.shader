@@ -9,8 +9,8 @@ Shader "Custom/Volume Ray Caster" {
 		_DataMin ("Data threshold: min", Range(0,1)) = 0
 		_DataMax ("Data threshold: max", Range(0,1)) = 1
 		_StretchPower ("Data stretch power", Range(0.1,3)) = 1  // increase it to highlight the highest data values
-		_Opacity ("Intensity normalization per step", Float) = 1
-		_Intensity  ("Intensity normalization per ray" , Float) = 1
+		_Opacity ("Intensity normalization per step", Range(0, 10)) = 1
+		_Intensity  ("Intensity normalization per ray" , Range(0, 10)) = 1
 		_Steps ("Max number of steps", Range(1,1024)) = 128 // should ideally be as large as data resolution, strongly affects frame rate
 		_Interp ("Interpolation value", Range(0,2)) = 1 // Interpolation looks nicer, but is slower due to more texture reads
 		_RenderMode ("Render Mode", Range(0,5)) = 0 // MIP, Composting multiply-alpha, composting built-in alpha, Gradient magnitude, iso-shading?
@@ -23,7 +23,6 @@ Shader "Custom/Volume Ray Caster" {
 		_Atlas5("Atlas5", 2D) = "black" {}
 		_Atlas6("Atlas6", 2D) = "black" {}
 		_Atlas7("Atlas7", 2D) = "black" {}
-
 	}
 
 	SubShader {
@@ -125,9 +124,6 @@ Shader "Custom/Volume Ray Caster" {
 					float z1 = ceil(POS.z);
 
 					// Get interpolation fraction
-					//float xd = frac(POS.x);
-					//float yd = frac(POS.y);
-					//float zd = frac(POS.z);
 					float xd = POS.x-x0; // Same thing as frac
 					float yd = POS.y-y0;
 					float zd = POS.z-z0;
@@ -259,9 +255,12 @@ Shader "Custom/Volume Ray Caster" {
 
 					  	} else if (_RenderMode < 1.5 && ray_col.a < 1.0 && mean_col > _DataMin && mean_col < _DataMax){
 					  		// Composting multiply alpha
-					  		float normalisation = _Opacity*10.0f * length(ray_step) * pow(mean_col, _StretchPower);
-					  		ray_col.rgb = ray_col.rgb + (1 - ray_col.a) * normalisation * voxel_col.rgb;
-					  		ray_col.a   = ray_col.a   + (1 - ray_col.a) * normalisation;
+					  		//float normalisation = _Opacity * length(ray_step) * pow(mean_col, _StretchPower);
+					  		//ray_col.rgb = ray_col.rgb + (1 - ray_col.a) * normalisation * voxel_col.rgb * (_Steps-k)/k;
+					  		//ray_col.a   = ray_col.a   + (1 - ray_col.a) * normalisation;
+					  		voxel_col.a *= saturate(_Opacity * length(ray_step));
+					  		voxel_col.rgb *= voxel_col.a * _StretchPower;
+					  		ray_col = ray_col + (1.0f-ray_col.a) * voxel_col;
 
 					  	} else if (_RenderMode < 2.5 && ray_col.a < 1.0 && voxel_col.a > _DataMin && voxel_col.a < _DataMax){
 					  		// Composting built-in alpha - probably built-in alpha from Icy
@@ -279,20 +278,9 @@ Shader "Custom/Volume Ray Caster" {
 					  	// Need to sort border out still. 
 						//float border = step(-_ClipPlane.w, dot(_ClipPlane, float4(ray_pos, 0)));
 
-
-						// Old blending styles:
-						//src.a *= saturate(100 * _Opacity * border * length(ray_step) * pow(src.a, _StretchPower));
-				        //src.rgb *= src.a; // Multiplying by alpha gives smoothing of some kind...
-				        //ray_col = (1.0f - ray_col.a) * src + ray_col;
-
-						//float4 voxel_col = get_data(ray_pos);
-						//voxel_col.a = _NormPerStep * length(ray_step) * pow(voxel_col.a,_StretchPower);
-						//ray_col.rgb = ray_col.rgb + (1 - ray_col.a) * voxel_col.a * voxel_col.rgb;
-						//ray_col.a   = ray_col.a   + (1 - ray_col.a) * voxel_col.a;
 					}
 				}
-				ray_col.rgb *= _Intensity * 10.0f;
-				ray_col = clamp(ray_col,0,1);
+				ray_col.rgb *= _Intensity;
 		    	return ray_col;
 			}
 

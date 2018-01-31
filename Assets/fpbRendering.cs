@@ -26,8 +26,6 @@ public class fpbRendering : MonoBehaviour {
 	public float threshold = 0.1f;
 	[SerializeField][Range(0, 5.0f)]
 	public float intensity = 0.75f;
-	[SerializeField][Range(5,9)]
-	public float qualityValue = 5.0f;
 
 	[Header("Touch input")]
 	[SerializeField]
@@ -45,10 +43,6 @@ public class fpbRendering : MonoBehaviour {
 	[SerializeField]
 	private Slider intensitySlider;
 	[SerializeField]
-	private Slider qualitySlider;
-	[SerializeField]
-	private Dropdown interpDropdown;
-	[SerializeField]
 	private Dropdown renderingMode; // should change this to rendering mode
 
 	private Material _rayMarchMaterial;
@@ -57,7 +51,6 @@ public class fpbRendering : MonoBehaviour {
 
 	private bool takeScreenShot = false;
 
-	private int interp = 0;
 	private int rendering = 1;
 	private float zSteps;
 
@@ -105,24 +98,19 @@ public class fpbRendering : MonoBehaviour {
 		if (!variables.getFreezeAll ()) {
 			opacity = opacitySlider.value * opacitySlider.value;
 			opacity += Input.GetAxis("OpacityAxis") * opacitySpeed * Time.deltaTime * opacity;
-			opacity = clamp(opacity);
+			//opacity = clamp(opacity);
 			opacitySlider.value = Mathf.Sqrt(opacity);
 
 			threshold = thresholdSlider.value;
 			threshold += Input.GetAxis ("ThresholdAxis") * thresholdSpeed * Time.deltaTime;
-			threshold = clamp(threshold);
+			//threshold = clamp(threshold);
 			thresholdSlider.value = threshold;
 
 			// would like to make the intensity slider logarithmic. Maybe quadratic is easiest. 
 			intensity = intensitySlider.value * intensitySlider.value;
 			intensity += Input.GetAxis ("IntensityAxis") * intensitySpeed * Time.deltaTime * intensity;
-			intensity = clamp(intensity, 0.0f, 5.0f);
+			//intensity = clamp(intensity, 0.0f, 5.0f);
 			intensitySlider.value = Mathf.Sqrt (intensity);
-
-			// Quality
-			qualityValue = qualitySlider.value;
-			zSteps = Mathf.Pow(2.0f, Mathf.Floor(qualityValue));
-			//downscale = (int)clamp(Mathf.Pow(2.0f, 9.0f - Mathf.Round(qualityValue)), 1.0f, variables.tPixelWidth);
 
 			if (Input.GetKeyUp (KeyCode.N)) {
 				variables.sectionMode = !variables.sectionMode;
@@ -144,9 +132,9 @@ public class fpbRendering : MonoBehaviour {
 
 				// Change opacity and intensity
 				opacity += xMove * opacityTouchSpeed * opacity;
-				opacity = clamp (opacity, 0.01f, 1.0f);
+				//opacity = clamp (opacity, 0.01f, 1.0f);
 				intensity += yMove * intensityTouchSpeed * intensity;
-				intensity = clamp (intensity, 0.01f, 5.0f);
+				//intensity = clamp (intensity, 0.01f, 5.0f);
 
 				// Find the position in the previous frame of each touch.
 				Vector2 touch0PrevPos = touch0.position - touch0.deltaPosition;
@@ -242,10 +230,6 @@ public class fpbRendering : MonoBehaviour {
 		updateRender = Time.time - updateTime < 1;
 	}
 
-	public void triggerRender(){
-		updateTime = Time.time + 0.5f;
-	}
-
 	private void Start()
 	{
 		// set default rendering parameters. If necessary.
@@ -270,18 +254,10 @@ public class fpbRendering : MonoBehaviour {
 		thresholdSlider.value = threshold;
 		intensitySlider.value = Mathf.Sqrt(intensity);
 
-		qualitySlider.value = qualityValue;
-		interpDropdown.value = interp;
-
 		variables.sectionMode = false;
 
 		updateTime = Time.time;
 		GenerateVolumeTexture();
-	}
-
-	public void updateInterp(int newInterp){
-		print ("new interp value is " + newInterp);
-		_rayMarchMaterial.SetFloat(_interpID, (float)newInterp);
 	}
 
 	public void updateRenderingMode(int newRendering){
@@ -332,17 +308,13 @@ public class fpbRendering : MonoBehaviour {
 			_rayMarchMaterial.SetFloat (_opacityID, opacity); // Blending strength 
 			_rayMarchMaterial.SetFloat (_thresholdID, threshold); // alpha cutoff value
 			_rayMarchMaterial.SetFloat (_intensityID, intensity); // blends image a bit better
-			//_rayMarchMaterial.SetInt ("_zSteps", (int)zSteps);
 
-
-			//Graphics.Blit (null, volumeTarget, _rayMarchMaterial);
 		}
 	}
 
 	private int _opacityID;
 	private int _thresholdID;
 	private int _intensityID;
-	private int _interpID;
 	private int _renderID;
 
 	private void GenerateVolumeTexture()
@@ -351,7 +323,6 @@ public class fpbRendering : MonoBehaviour {
 		_opacityID = Shader.PropertyToID("_Opacity");
 		_intensityID = Shader.PropertyToID ("_Intensity");
 		_thresholdID = Shader.PropertyToID ("_DataMin");
-		_interpID = Shader.PropertyToID ("_Interp");
 		_renderID = Shader.PropertyToID ("_RenderMode");
 	}
 
