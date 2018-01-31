@@ -55,6 +55,7 @@ Shader "Custom/Volume Ray Caster" {
 			float _atlasHeight;
 
 			float4 _ClipPlane;
+			float4 _CubeScale;
 			float _DataMin, _DataMax;
 			float _StretchPower;
 			float _Opacity;
@@ -206,7 +207,7 @@ Shader "Custom/Volume Ray Caster" {
 
 				// slice and threshold
 
-				float border = step(-_ClipPlane.w, dot(_ClipPlane, float4(pos-0.5, 0)));
+				//float border = step(-_ClipPlane.w, dot(_ClipPlane, float4(pos-0.5, 0)));
 				//data *= border;
 				//border *= step(-_ClipPlane2.w, dot(_ClipPlane2, float4(pos-0.5, 0)));
 				data *= step(_DataMin, meanColor);
@@ -243,41 +244,47 @@ Shader "Custom/Volume Ray Caster" {
 				float4 ray_col = 0;
 				for(int k = 0; k < MAX_STEPS; k++)
 				{
-					ray_pos = pNear + k * ray_step;
-					if (ray_pos.x > 0 && ray_pos.y > 0 && ray_pos.z > 0
-					  && ray_pos.x < 1 && ray_pos.y < 1 && ray_pos.z < 1 && k<_Steps){
-					  	float4 voxel_col = sample2D(ray_pos);
-					  	float mean_col = (voxel_col.r + voxel_col.g + voxel_col.b)/3.0f;
-					  	if (_RenderMode < 0.5 && mean_col > _DataMin && mean_col < _DataMax){
-					  		// Max Intensity Projection
-					  		float mean_max_voxel = (ray_col.r + ray_col.g + ray_col.b)/3.0f;
-					  		if (mean_col > mean_max_voxel) ray_col = voxel_col;
+					if (k<_Steps){
+						ray_pos = pNear + k * ray_step;
+						//float4 worldRayPos = dot(float4(ray_pos-0.5f, 1.0f), _CubeScale);
+						bool doClip = dot(_ClipPlane, float4(ray_pos-0.5f, 1.0f)) > 0.0f;
+					
 
-					  	} else if (_RenderMode < 1.5 && ray_col.a < 1.0 && mean_col > _DataMin && mean_col < _DataMax){
-					  		// Composting multiply alpha
-					  		//float normalisation = _Opacity * length(ray_step) * pow(mean_col, _StretchPower);
-					  		//ray_col.rgb = ray_col.rgb + (1 - ray_col.a) * normalisation * voxel_col.rgb * (_Steps-k)/k;
-					  		//ray_col.a   = ray_col.a   + (1 - ray_col.a) * normalisation;
-					  		voxel_col.a *= saturate(_Opacity * length(ray_step));
-					  		voxel_col.rgb *= voxel_col.a * _StretchPower;
-					  		ray_col = ray_col + (1.0f-ray_col.a) * voxel_col;
+						if (!doClip && k<_Steps && ray_pos.x > 0 && ray_pos.y > 0 && ray_pos.z > 0
+						  && ray_pos.x < 1 && ray_pos.y < 1 && ray_pos.z < 1){
+						  	float4 voxel_col = sample2D(ray_pos);
+						  	float mean_col = (voxel_col.r + voxel_col.g + voxel_col.b)/3.0f;
+						  	if (_RenderMode < 0.5 && mean_col > _DataMin && mean_col < _DataMax){
+						  		// Max Intensity Projection
+						  		float mean_max_voxel = (ray_col.r + ray_col.g + ray_col.b)/3.0f;
+						  		if (mean_col > mean_max_voxel) ray_col = voxel_col;
 
-					  	} else if (_RenderMode < 2.5 && ray_col.a < 1.0 && voxel_col.a > _DataMin && voxel_col.a < _DataMax){
-					  		// Composting built-in alpha - probably built-in alpha from Icy
-					  		float normalisation = _Opacity*10.0f * length(ray_step) * pow(voxel_col.a, _StretchPower);
-					  		ray_col.rgb = ray_col.rgb + (1 - ray_col.a) * normalisation * voxel_col.rgb;
-					  		ray_col.a   = ray_col.a   + (1 - ray_col.a) * normalisation;
+						  	} else if (_RenderMode < 1.5 && ray_col.a < 1.0 && mean_col > _DataMin && mean_col < _DataMax){
+						  		// Composting multiply alpha
+						  		//float normalisation = _Opacity * length(ray_step) * pow(mean_col, _StretchPower);
+						  		//ray_col.rgb = ray_col.rgb + (1 - ray_col.a) * normalisation * voxel_col.rgb * (_Steps-k)/k;
+						  		//ray_col.a   = ray_col.a   + (1 - ray_col.a) * normalisation;
+						  		voxel_col.a *= saturate(_Opacity * length(ray_step));
+						  		voxel_col.rgb *= voxel_col.a * _StretchPower;
+						  		ray_col = ray_col + (1.0f-ray_col.a) * voxel_col;
 
-					  	} else if (_RenderMode < 3.5){
-					  		// Gradient magnitude opacity modulation
+						  	} else if (_RenderMode < 2.5 && ray_col.a < 1.0 && voxel_col.a > _DataMin && voxel_col.a < _DataMax){
+						  		// Composting built-in alpha - probably built-in alpha from Icy
+						  		float normalisation = _Opacity*10.0f * length(ray_step) * pow(voxel_col.a, _StretchPower);
+						  		ray_col.rgb = ray_col.rgb + (1 - ray_col.a) * normalisation * voxel_col.rgb;
+						  		ray_col.a   = ray_col.a   + (1 - ray_col.a) * normalisation;
 
-					  	} else if (_RenderMode < 4.5){
-					  		// Shaded iso-volume
-					  	}
+						  	} else if (_RenderMode < 3.5){
+						  		// Gradient magnitude opacity modulation
 
-					  	// Need to sort border out still. 
-						//float border = step(-_ClipPlane.w, dot(_ClipPlane, float4(ray_pos, 0)));
+						  	} else if (_RenderMode < 4.5){
+						  		// Shaded iso-volume
+						  	}
 
+						  	// Need to sort border out still. 
+							//float border = step(-_ClipPlane.w, dot(_ClipPlane, float4(ray_pos, 0)));
+
+						}
 					}
 				}
 				ray_col.rgb *= _Intensity;

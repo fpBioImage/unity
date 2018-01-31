@@ -967,7 +967,7 @@ GameObject:
   - component: {fileID: 107758800}
   - component: {fileID: 107758799}
   - component: {fileID: 107758798}
-  m_Layer: 5
+  m_Layer: 1
   m_Name: back-cut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3527,7 +3527,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 937860721}
   m_Father: {fileID: 1135988649}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5479,7 +5480,7 @@ GameObject:
   - component: {fileID: 937860724}
   - component: {fileID: 937860723}
   - component: {fileID: 937860722}
-  m_Layer: 5
+  m_Layer: 1
   m_Name: Cutting Quad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5493,13 +5494,13 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 937860720}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -180.6455, y: -105.643196, z: -6.06}
+  m_LocalPosition: {x: 0, y: 0, z: 0.3}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 1420273494}
   - {fileID: 107758797}
-  m_Father: {fileID: 1135988649}
-  m_RootOrder: 2
+  m_Father: {fileID: 594987083}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &937860722
 MonoBehaviour:
@@ -5512,7 +5513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c025ce0b6a7bc4bc097c41a62b538699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneCamera: {fileID: 1135988648}
+  sceneCamera: {fileID: 594987078}
   model: {fileID: 294906942}
   speed: 1
   rotSpeed: 1
@@ -6871,7 +6872,6 @@ Transform:
   m_Children:
   - {fileID: 594987083}
   - {fileID: 1576032731}
-  - {fileID: 937860721}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6972,12 +6972,12 @@ MonoBehaviour:
   fullScreenQuad: {fileID: 1576032727}
   offlineMode: 0
   atlasMode: 1
-  pathToImages: C:\Users\carcu\Documents\Unity Projects\FP Bioimage\Builds\hotfly\
-  imagePrefix: hotfly_z
+  pathToImages: C:\Users\carcu\Documents\Unity Projects\FP Bioimage\Builds\mouse\
+  imagePrefix: mouse_z
   numberingFormat: 0000
-  imageWidth: 400
-  imageHeight: 400
-  imageDepth: 177
+  imageWidth: 336
+  imageHeight: 255
+  imageDepth: 255
   voxelSize: {x: 1, y: 1, z: 1}
   cube: {fileID: 1980090527}
 --- !u!1 &1146876747
@@ -8852,7 +8852,7 @@ GameObject:
   - component: {fileID: 1420273497}
   - component: {fileID: 1420273496}
   - component: {fileID: 1420273495}
-  m_Layer: 5
+  m_Layer: 1
   m_Name: Quad (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13351,7 +13351,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1384929320}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 5
+  m_MaxValue: 8
   m_WholeNumbers: 0
   m_Value: 5
   m_OnValueChanged:

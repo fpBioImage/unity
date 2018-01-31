@@ -282,7 +282,7 @@ public class fpbRendering : MonoBehaviour {
 			//var height = source.height / downscale;
 
 			if (cubeTarget != null && clipPlane != null && clipPlane.gameObject.activeSelf) {
-				var p = new Plane (
+				/*var p = new Plane (
 					cubeTarget.InverseTransformDirection (clipPlane.forward),
 					cubeTarget.InverseTransformPoint (clipPlane.position));
 				Vector3 scaledPlane = new Vector3 (p.normal.x * cubeTarget.localScale.x, p.normal.y * cubeTarget.localScale.y, p.normal.z * cubeTarget.localScale.z).normalized;
@@ -291,15 +291,20 @@ public class fpbRendering : MonoBehaviour {
 					cubeTarget.InverseTransformDirection (backClipPlane.forward),
 					cubeTarget.InverseTransformPoint (backClipPlane.position));
 				Vector3 scaledBackPlane = new Vector3 (p2.normal.x * cubeTarget.localScale.x, p2.normal.y * cubeTarget.localScale.y, p2.normal.z * cubeTarget.localScale.z).normalized;
+*/
 
+
+
+				var p = new Plane (cubeTarget.InverseTransformDirection(clipPlane.forward), cubeTarget.InverseTransformPoint(clipPlane.position));
+				Vector3 scaledPlane = new Vector3 (p.normal.x * cubeTarget.localScale.x, p.normal.y * cubeTarget.localScale.y, p.normal.z * cubeTarget.localScale.z).normalized;
 
 				_rayMarchMaterial.SetVector ("_ClipPlane", new Vector4 (scaledPlane.x, scaledPlane.y, scaledPlane.z, p.distance));
 
-				if (variables.sectionMode) {
+				/*if (variables.sectionMode) {
 					_rayMarchMaterial.SetVector ("_ClipPlane2", new Vector4 (scaledBackPlane.x, scaledBackPlane.y, scaledBackPlane.z, p2.distance));
 				} else {
 					_rayMarchMaterial.SetVector ("_ClipPlane2", new Vector4 (0.0f, 0.0f, 0.0f, 50.0f));
-				}
+				}*/
 			} else {
 				_rayMarchMaterial.SetVector ("_ClipPlane", Vector4.zero);
 			}

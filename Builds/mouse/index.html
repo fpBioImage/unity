@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>mouse - FPBioimage Viewer</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <!-- EDIT THIS JAVASCRIPT! -->
+    <script type='text/javascript'>
+      fpb = {
+        pathToFPBioimage: "http://fpb.ceb.cam.ac.uk/3",
+        pathToImages: "./", // This is the path relative to this webpage
+        uniqueName: "mouse", // Give this image stack a unique name for bookmarking to work correctly
+        imagePrefix: "mouse_z", // The prefix of the image stack file names
+        numberingFormat: "0000", // eg. "000" for 000, 001, 002, 003 etc.
+        fileType: "png", // png or jpg
+        atlasMode: 'true', // True if providing pre-built texture atlases. Needs to be a string.
+        voxelSize: {x: 1000.0, y: 1000.0, z: 1000.0}, // This just needs to be a ratio of x:y:z voxel size
+        numberOfImages: 255, // Number of images in the stack
+        sliceWidth: 336, sliceHeight: 255, // The width and height of the image slices (before padding)
+        imageAlpha: 'true', // True for exports from Icy for nice alpha blending
+        opacity: 0.4, // Optional rendering parameter
+        intensity: 1.0, // Optional rendering parameter
+        threshold: 0.2 // Optional rendering parameter
+      }
+    </script>
+    <!-- END OF REQUIRED EDITS -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <style>
+      html,body,h1,h2,h3,h4,h5 {font-family: "Roboto", sans-serif}
+      body {overflow: hidden;}     
+      * {margin: 0; padding:0;}
+      #fullBrowserWindow {width:100%; height:100%; position: absolute;}
+      #fullBrowserWindow canvas {width: 100%; height:100%;}
+    </style>
+  </head>
+  <body>
+
+    <div id="jsHolder"></div>
+
+    <script type="text/javascript">
+    var s1 = document.createElement("script");
+        s1.type = "text/javascript";
+        s1.src = fpb.pathToFPBioimage + "/FPProgress.js";
+        s1.innerHTML = null;
+        document.getElementById("jsHolder").innerHTML = "";
+        document.getElementById("jsHolder").appendChild(s1);
+    </script>
+
+    <!-- Put the WebGL Canvas in here-->
+    <div id="fullBrowserWindow"></div>
+
+  </body>
+</html>

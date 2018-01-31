@@ -253,10 +253,10 @@ public class downloadImages : MonoBehaviour {
 		rayMarchMaterial.SetFloat ("_slicesPerRow", slicesPerRow);
 
 
-		Vector3 cubeSize = new Vector3 (imageWidth * variables.voxelSize[0], imageHeight * variables.voxelSize[1], imageDepth * variables.voxelSize[2]);
-		float cubeScale = 3.5f * Mathf.Max (paddedImageWidth / imageWidth, Mathf.Max (paddedImageHeight/imageHeight, 1));
+		Vector3 cubeSize = new Vector3 (imageWidth * variables.voxelSize[0], imageHeight * variables.voxelSize[1], imageDepth * variables.voxelSize[2]).normalized;
+		cubeSize *= 3.5f * Mathf.Min (1.0f/cubeSize.x, Mathf.Min (1.0f/cubeSize.y, 1.0f/cubeSize.z));
 
-		cube.transform.localScale = cubeSize.normalized * cubeScale;
+		cube.transform.localScale = cubeSize;
 
 		// Load the scene
 		infoText.text = "Click to start";
