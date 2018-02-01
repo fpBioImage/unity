@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
+using System.IO;
 
 /*
  * This script does not work! 
@@ -13,74 +15,66 @@ using System.Collections;
 
 public class screenshooter : MonoBehaviour {
 
-	private bool takeHiResShot = false;
-
-	private int resWidth = 1000;
-	private int resHeight = 500;
-
-	public GameObject cuttingQuad;
-	private Camera renderCamera;
+	public InputField wRes;
+	public InputField hRes;
 
 	// Use this for initialization
 	void Start () {
-		renderCamera = new Camera();
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
-		if (Input.GetKeyUp (KeyCode.V) && !variables.getFreezeAll ()) {
-			//cuttingQuad.SetActive (false);
-			takeHiResShot = true;
-			//StartCoroutine(takeHiResShot());
-			//string filepath = System.IO.Path.Combine(Application.dataPath, "screenshot.png");
-			//Debug.Log (filepath);
-			//Application.CaptureScreenshot(filepath);
+		// Screen shots
+		if (Input.GetKeyUp (KeyCode.V)) {
+			takeSreenshot (false);
 		}
+
+		if (Input.GetKeyUp (KeyCode.C)) {
+			takeSreenshot (true);
+		}
+		
 	}
 
+	public void takeSreenshot(bool hiRes){
+			int camWidth;
+			int camHeight;
 
+			if (hiRes) {
+				bool wOK = int.TryParse (wRes.text, out camWidth);
+				bool hOK = int.TryParse (hRes.text, out camHeight);
 
+				if (!wOK || camWidth < 1) {
+					camWidth = 1920;
+				} 
+				if (!hOK || camHeight < 1) {
+					camHeight = 1080;
+				}
+			} else {
+				camWidth = Camera.main.pixelWidth;
+				camHeight = Camera.main.pixelHeight;
+			}
 
-	void OnPreRender(){
-		if (takeHiResShot) {
-			renderCamera.CopyFrom (Camera.main);
+			Camera mainCamera = Camera.main;
 
-			RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
-			renderCamera.targetTexture = rt;
-			Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.ARGB32, false);
-			//Camera.main.renderingPath = RenderingPath.Forward;
-			renderCamera.Render();
+			RenderTexture rt = new RenderTexture(camWidth, camHeight, 24);
+			mainCamera.targetTexture = rt;
+			Texture2D snapShot = new Texture2D(camWidth, camHeight, TextureFormat.RGB24, false);
+			mainCamera.Render();
 			RenderTexture.active = rt;
-			screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
-			renderCamera.targetTexture = null;
-			RenderTexture.active = null; 
-			Destroy (rt);
-			Destroy (renderCamera);
-			byte[] bytes = screenShot.EncodeToPNG();
+			snapShot.ReadPixels(new Rect(0, 0, camWidth, camHeight), 0, 0);
+			mainCamera.targetTexture = null;
+			RenderTexture.active = null;
+			Destroy(rt);
 
-			Application.ExternalCall("download", "data:image/png;base64," + System.Convert.ToBase64String(bytes), "Screenshot " + System.DateTime.Now.ToString ("yyyy-MM-dd") + " at " + System.DateTime.Now.ToString("HH.mm.ss") + ".png");
-			takeHiResShot = false;
-			//cuttingQuad.SetActive (true);
-		}
+			byte[] bytes = snapShot.EncodeToPNG ();
+
+			#if UNITY_EDITOR
+			File.WriteAllBytes(Application.dataPath + "/SavedScreen.png", bytes);
+			#else 
+			Application.ExternalCall ("download", "data:image/png;base64," + System.Convert.ToBase64String (bytes), "Screenshot " + System.DateTime.Now.ToString ("yyyy-MM-dd") + " at " + System.DateTime.Now.ToString ("HH.mm.ss") + ".png");
+			#endif
+
 	}
-
-	/*IEnumerator takeHiResShot()
-	{
-		yield return new WaitForEndOfFrame ();
-
-		Texture2D rt = new Texture2D (resWidth, resHeight);
-
-		rt.ReadPixels (new Rect (0, 0, resWidth, resHeight), 0, 0);
-		rt.Apply ();
-
-		yield return 0;
-
-		byte[] bytes = rt.EncodeToPNG ();
-		Application.ExternalCall("download", "data:image/png;base64," + System.Convert.ToBase64String(bytes), "Screenshot " + System.DateTime.Now.ToString ("yyyy-MM-dd") + " at " + System.DateTime.Now.ToString("HH.mm.ss") + ".png");
-
-		Destroy (rt);
-		cuttingQuad.SetActive (true);
-	}*/
 
 }

@@ -6853,6 +6853,7 @@ GameObject:
   - component: {fileID: 1135988651}
   - component: {fileID: 1135988650}
   - component: {fileID: 1135988655}
+  - component: {fileID: 1135988656}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6980,6 +6981,19 @@ MonoBehaviour:
   imageDepth: 255
   voxelSize: {x: 1, y: 1, z: 1}
   cube: {fileID: 1980090527}
+--- !u!114 &1135988656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1135988648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0800a9682e7ea4f7d81ceafdea8ce743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wRes: {fileID: 1043198253}
+  hRes: {fileID: 1860863998}
 --- !u!1 &1146876747
 GameObject:
   m_ObjectHideFlags: 0
@@ -9233,16 +9247,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: hiResShot
-        m_Mode: 1
+      - m_Target: {fileID: 1135988656}
+        m_MethodName: takeSreenshot
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
@@ -12562,9 +12576,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: takeShot
-        m_Mode: 1
+      - m_Target: {fileID: 1135988656}
+        m_MethodName: takeSreenshot
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
