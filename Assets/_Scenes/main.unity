@@ -12009,6 +12009,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeObject: {fileID: 294906942}
   cuttingPlaneObject: {fileID: 937860720}
+  opacity: {fileID: 2125419070}
+  intensity: {fileID: 748560744}
+  threshold: {fileID: 1892806683}
+  projectionType: {fileID: 823776145}
   annotationBox: {fileID: 1878816934}
   dummySelectable: {fileID: 74925990}
   backgroundPanel: {fileID: 1132740030}
@@ -12049,16 +12053,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88e7fe108e80b3f4485e25d07eaa99a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  downscale: 2
   volumeLayer:
     serializedVersion: 2
     m_Bits: 0
   opacitySpeed: 0.8
   thresholdSpeed: 0.07
   intensitySpeed: 0.2
-  opacity: 1
-  threshold: 0.1
-  intensity: 0.75
   opacityTouchSpeed: 80
   thresholdTouchSpeed: 7
   intensityTouchSpeed: 20
@@ -12066,8 +12066,9 @@ MonoBehaviour:
   thresholdSlider: {fileID: 1892806683}
   intensitySlider: {fileID: 748560744}
   renderingMode: {fileID: 0}
-  wRes: {fileID: 35922896}
-  hRes: {fileID: 542296368}
+  opacity: 1
+  threshold: 0.1
+  intensity: 0.75
   clipPlane: {fileID: 1420273494}
   backClipPlane: {fileID: 107758797}
   cubeTarget: {fileID: 1980090531}

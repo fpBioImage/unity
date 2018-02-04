@@ -38,7 +38,6 @@ public class fpbRendering : MonoBehaviour {
 	public float opacity = 4.0f;
 	public float threshold = 0.2f;
 	public float intensity = 1.0f;
-	private int rendering = 1;
 
 	private Material _rayMarchMaterial;
 	private bool updateRender = true;
@@ -51,7 +50,7 @@ public class fpbRendering : MonoBehaviour {
 	private int _clipPlane1ID;
 
 	public void setFreezeAll(bool freezeAll){
-		variables.setFreezeAll (freezeAll);
+		variables.freezeAll = freezeAll;
 	}
 
 
@@ -73,9 +72,10 @@ public class fpbRendering : MonoBehaviour {
 			// next, try to get parameters from javascript string
 			// if we still haven't got parameters, use the defaults.
 			
+		/*
 		opacitySlider.value = opacity;
 		intensitySlider.value = intensity;
-		thresholdSlider.value = threshold;
+		thresholdSlider.value = threshold;*/ // These can all be set from bookmarking tab at Start() time. 
 
 		updateTime = Time.time;
 	}
@@ -127,7 +127,7 @@ public class fpbRendering : MonoBehaviour {
 			Input.GetKeyDown (KeyCode.LeftCommand) || Input.GetKeyDown (KeyCode.RightCommand) ||
 			Input.GetKeyDown (KeyCode.LeftWindows) || Input.GetKeyDown (KeyCode.RightWindows) ||
 			Input.GetKeyDown (KeyCode.LeftShift) || Input.GetKeyDown (KeyCode.RightShift)) {
-			variables.setFreezeAll (true);
+			variables.freezeAll = true;
 		}
 		if (Input.GetKeyUp (KeyCode.LeftControl) || Input.GetKeyUp (KeyCode.RightControl) ||
 			Input.GetKeyUp (KeyCode.LeftAlt) || Input.GetKeyUp (KeyCode.RightAlt) ||
@@ -135,10 +135,10 @@ public class fpbRendering : MonoBehaviour {
 			Input.GetKeyUp (KeyCode.LeftCommand) || Input.GetKeyUp (KeyCode.RightCommand) ||
 			Input.GetKeyUp (KeyCode.LeftWindows) || Input.GetKeyUp (KeyCode.RightWindows) ||
 			Input.GetKeyUp (KeyCode.LeftShift) || Input.GetKeyUp (KeyCode.RightShift)) {
-			variables.setFreezeAll (false);
+			variables.freezeAll = false;
 		} 	
 
-		if (!variables.getFreezeAll ()) {
+		if (!variables.freezeAll) {
 			opacity = opacitySlider.value * opacitySlider.value;
 			opacity += Input.GetAxis("OpacityAxis") * opacitySpeed * Time.deltaTime * opacity;
 			//opacity = clamp(opacity);
@@ -210,7 +210,7 @@ public class fpbRendering : MonoBehaviour {
 		// Continue updating renderer for 1s after any keypress
 		if (Input.GetAxis ("ClipAxisX")!=0 || Input.GetAxis ("ClipAxisY")!=0 || Input.GetAxis ("ClipAxisZ")!=0) {
 			updateTime = Time.time + 3;
-		} else if (Input.anyKey || (!variables.getFreezeMouse() && (Input.GetAxis("Mouse X")!=0 || Input.GetAxis("Mouse Y")!=0) )) {
+		} else if (Input.anyKey || (!variables.freezeMouse && (Input.GetAxis("Mouse X")!=0 || Input.GetAxis("Mouse Y")!=0) )) {
 			updateTime = Time.time;
 		}
 		updateRender = Time.time - updateTime < 1;

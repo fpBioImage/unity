@@ -18,7 +18,7 @@ public class touchControls : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// Touch control
-		if (variables.getFreezeMouse ()) {
+		if (variables.freezeMouse) {
 
 
 

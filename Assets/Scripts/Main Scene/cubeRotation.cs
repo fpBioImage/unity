@@ -39,7 +39,7 @@ public class cubeRotation : MonoBehaviour {
 		if (!variables.showBindingBox) {freezeRotation = false;}
 
 		// Keyboard arrow control
-		if (!variables.getFreezeAll()){
+		if (!variables.freezeAll){
 			Vector3 vertRotAxis = transform.InverseTransformDirection(camTransform.TransformDirection(Vector3.right)).normalized;
 
 			float horizontalRot = Input.GetAxis("H2") * -rotateSpeed;
@@ -50,7 +50,7 @@ public class cubeRotation : MonoBehaviour {
 		}
 
 		// Mouse click control
-		if(Input.GetMouseButton(0) && variables.getFreezeMouse() && !freezeRotation){
+		if(Input.GetMouseButton(0) && variables.freezeMouse && !freezeRotation){
 			// Rotate with the mouse
 			Vector3 vertRotAxis = transform.InverseTransformDirection(camTransform.TransformDirection(Vector3.right)).normalized;
 

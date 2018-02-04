@@ -52,7 +52,7 @@ public class clipPlaneMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!variables.getFreezeAll ()) {
+		if (!variables.freezeAll) {
 			// Check if the plane is attached to the camera or the model
 			if (transform.parent == sceneCamera)
 				freezePlane = false;
@@ -70,7 +70,7 @@ public class clipPlaneMovement : MonoBehaviour {
 				rotationX -= Input.GetAxis ("ClipAxisX") * rotSpeed;
 				rotationY += Input.GetAxis ("ClipAxisY") * rotSpeed;
 
-				if (!variables.getJamesMode ()) {
+				if (!variables.jamesMode) {
 					rotationX = ClampAngle (rotationX, -135f, 135f);
 					rotationY = ClampAngle (rotationY, -135f, 135f);
 				}

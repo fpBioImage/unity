@@ -43,7 +43,7 @@ public class shareBookmarkClick : MonoBehaviour, IPointerEnterHandler, IPointerE
 		// create short link. 
 		variables.bookmarkHover = false;
 		GetComponent<Text> ().color = white;
-		Camera.main.GetComponent<bookmarker> ().createBookmarkURL ();
+		//Camera.main.GetComponent<bookmarker> ().createBookmarkURL ();
 
 	}
 }

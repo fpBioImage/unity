@@ -6,6 +6,7 @@ public class rightArrowControl : MonoBehaviour {
 
 	private bool isMovingLeft = false;
 	private bool isMovingRight = false;
+	private bool rightPanelOpen = false;
 
 	public GameObject rightPanel;
 	public Text arrowRightText;
@@ -23,13 +24,7 @@ public class rightArrowControl : MonoBehaviour {
 		rectTransform = rightPanel.GetComponent<RectTransform> ();
 		helpTransform = helpPanel.GetComponent<RectTransform> ();
 		infoTransform = infoPanel.GetComponent<RectTransform> ();
-
-		if (variables.rightPanelOpen) {
-			openWithoutAnimation ();
-		} else {
-			closeWithoutAnimation ();
-		}
-
+		closeWithoutAnimation ();
 	}
 	
 	// Update is called once per frame
@@ -45,7 +40,7 @@ public class rightArrowControl : MonoBehaviour {
 		if (rectTransform.anchoredPosition.x < 0.0f){
 			rectTransform.anchoredPosition = new Vector2(0.0f, rectTransform.anchoredPosition.y);
 			isMovingLeft = false;
-			variables.rightPanelOpen = true;
+			rightPanelOpen = true;
 			arrowRightText.text = "▶";
 			helpTransform.offsetMax = new Vector2 (-175.0f, helpTransform.offsetMax.y);
 			infoTransform.offsetMax = new Vector2 (-175.0f, infoTransform.offsetMax.y);
@@ -54,7 +49,7 @@ public class rightArrowControl : MonoBehaviour {
 		if (rectTransform.anchoredPosition.x > 155.0f) {
 			rectTransform.anchoredPosition = new Vector2(155.0f, rectTransform.anchoredPosition.y);
 			isMovingRight = false;
-			variables.rightPanelOpen = false;
+			rightPanelOpen = false;
 			arrowRightText.text = "◀";
 			helpTransform.offsetMax = new Vector2 (-30.0f, helpTransform.offsetMax.y);
 			infoTransform.offsetMax = new Vector2 (-30.0f, infoTransform.offsetMax.y);
@@ -67,11 +62,11 @@ public class rightArrowControl : MonoBehaviour {
 			return;
 		}
 
-		if (variables.rightPanelOpen) {
+		if (rightPanelOpen) {
 			isMovingRight = true;
 		}
 
-		if (!variables.rightPanelOpen) {
+		if (!rightPanelOpen) {
 			isMovingLeft = true;
 		}
 
@@ -80,7 +75,7 @@ public class rightArrowControl : MonoBehaviour {
 	private void openWithoutAnimation(){
 		rectTransform.anchoredPosition = new Vector2(0.0f, rectTransform.anchoredPosition.y);
 		isMovingLeft = false;
-		variables.rightPanelOpen = true;
+		rightPanelOpen = true;
 		arrowRightText.text = "▶";
 		helpTransform.offsetMax = new Vector2 (-175.0f, helpTransform.offsetMax.y);
 		infoTransform.offsetMax = new Vector2 (-175.0f, infoTransform.offsetMax.y);
@@ -89,7 +84,7 @@ public class rightArrowControl : MonoBehaviour {
 	private void closeWithoutAnimation(){
 		rectTransform.anchoredPosition = new Vector2(155.0f, rectTransform.anchoredPosition.y);
 		isMovingRight = false;
-		variables.rightPanelOpen = false;
+		rightPanelOpen = false;
 		arrowRightText.text = "◀";
 		helpTransform.offsetMax = new Vector2 (-30.0f, helpTransform.offsetMax.y);
 		infoTransform.offsetMax = new Vector2 (-30.0f, infoTransform.offsetMax.y);

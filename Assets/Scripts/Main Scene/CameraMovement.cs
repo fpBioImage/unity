@@ -56,11 +56,6 @@ public class CameraMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		#if UNITY_EDITOR
-			// This is to test memory usage. It isn't complied into the webGL javascript. 
-			PlayerSettings.SetPropertyString ("emscriptenArgs", "-s ALLOW_MEMORY_GROWTH=1", BuildTargetGroup.WebGL);
-		#endif
-
 		// Get initial parameters
 		startRotation = transform.localRotation;
 
@@ -83,7 +78,7 @@ public class CameraMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!variables.getFreezeAll ()) {
+		if (!variables.freezeAll) {
 			if (Input.GetKeyDown (KeyCode.Space)) {
 				fastMode = !fastMode;
 			}
@@ -104,7 +99,7 @@ public class CameraMovement : MonoBehaviour {
 			transform.position += Input.GetAxis ("Mouse ScrollWheel") * Camera.main.transform.forward * Time.deltaTime * scrollSensitivity;
 
 			// Rotation
-			if (!variables.getFreezeMouse () && !Input.GetMouseButton(1)) {
+			if (!variables.freezeMouse && !Input.GetMouseButton(1)) {
 				// This is the 'first person' mouse mode 
 				rotationX += (Input.GetAxis ("Mouse X")) * mouseSpeed;
 				rotationY += (Input.GetAxis ("Mouse Y")) * mouseSpeed;
@@ -128,12 +123,12 @@ public class CameraMovement : MonoBehaviour {
 				UnityEngine.SceneManagement.SceneManager.LoadScene ("home");
 			}
 			if (Input.GetKeyDown (KeyCode.F)) {
-				if (variables.getFreezeMouse ()) {
+				if (variables.freezeMouse) {
 					// lock pointer
-					variables.setFreezeMouse (false);
+					variables.freezeMouse = false;
 				} else {
 					// unlock pointer
-					variables.setFreezeMouse (true);
+					variables.freezeMouse = true;
 				}
 			}
 
@@ -153,7 +148,7 @@ public class CameraMovement : MonoBehaviour {
 		leftPanel.SetActive (variables.showBindingBox && !variables.hidePanels);
 		rightPanel.SetActive (variables.showBindingBox && !variables.hidePanels);
 
-		if (!variables.getFreezeAll()) {
+		if (!variables.freezeAll) {
 			float xNow = transform.position.x;
 			float yNow = transform.position.y;
 			float zNow = transform.position.z;

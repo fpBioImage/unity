@@ -36,6 +36,7 @@ public class downloadImages : MonoBehaviour {
 		#if UNITY_EDITOR
 			offlineMode = true;
 			variables.offlineMode = true;
+			variables.fpbJSON = new FpbJSON(offlineMode);
 		#else
 			offlineMode = false; // Just in case!
 			print("Setting image variables...");
@@ -52,7 +53,7 @@ public class downloadImages : MonoBehaviour {
 		if (!atlasMode) {
 			print ("Loading by image slices");
 			infoText.text = "Downloading image slices...";
-			StartCoroutine (loadBySlices ());
+			//StartCoroutine (loadBySlices ());
 		} else {
 			print ("Loading atlases directly");
 			infoText.text = "Downloading texture maps...";
@@ -60,7 +61,9 @@ public class downloadImages : MonoBehaviour {
 		}
 	}
 
-	IEnumerator loadBySlices(){
+
+	/*IEnumerator loadBySlices(){
+		//// THIS ALL NEEDS UPDATING. UNSUPPORTED FOR NOW. 
 		// First, check that variables.slices is null. If not, we don't have
 		// to download the images again, and can skip straight to loading the scene. 
 		if (variables.atlasArray[0] == null) {
@@ -205,7 +208,7 @@ public class downloadImages : MonoBehaviour {
 		// Load the scene
 		infoText.text = "Preparing volumetric renderer...";
 		UnityEngine.SceneManagement.SceneManager.LoadScene ("main");
-	}
+	}*/
 
 	IEnumerator loadByAtlas(){
 		float atlasWidth = 1; 
@@ -253,7 +256,7 @@ public class downloadImages : MonoBehaviour {
 		rayMarchMaterial.SetFloat ("_slicesPerRow", slicesPerRow);
 
 
-		Vector3 cubeSize = new Vector3 (imageWidth * variables.voxelSize[0], imageHeight * variables.voxelSize[1], imageDepth * variables.voxelSize[2]).normalized;
+		Vector3 cubeSize = new Vector3 (imageWidth * voxelSize.x, imageHeight * voxelSize.y, imageDepth * voxelSize.z).normalized;
 		cubeSize *= 3.5f * Mathf.Min (1.0f/cubeSize.x, Mathf.Min (1.0f/cubeSize.y, 1.0f/cubeSize.z));
 
 		cube.transform.localScale = cubeSize;
@@ -287,6 +290,28 @@ public class downloadImages : MonoBehaviour {
 
 	// Set variables for online mode
 	private void setVariables(){
+		Application.ExternalEval ("fpcanvas.SendMessage('Main Camera', 'parseFpbJSON', JSON.stringify(fpb));");
+
+		atlasMode = variables.fpbJSON.getAtlasMode();
+		print ("Set Atlas Mode as " + atlasMode);
+		pathToImages = variables.fpbJSON.pathToImages;
+		if (pathToImages.Substring (pathToImages.Length - 1) != "/") {
+			pathToImages = pathToImages + "/";
+		}
+		print ("Set path to images as " + pathToImages);
+		
+
+		imagePrefix = variables.fpbJSON.imagePrefix;
+		numberingFormat = variables.fpbJSON.numberingFormat;
+
+		imageWidth = variables.fpbJSON.sliceWidth;
+		imageHeight = variables.fpbJSON.sliceHeight;
+		imageDepth = variables.fpbJSON.numberOfImages;
+		print ("Set image depth as " + imageDepth);
+		voxelSize = variables.fpbJSON.voxelSize; // this one might not work so well... 
+		print("Set voxel size as x:" + voxelSize.x + ", y:" + voxelSize.y + ", z:" + voxelSize.z);
+
+		/*
 		string evalInputs = "if(fpb.uniqueName==undefined){fpb.uniqueName='defaultName'};fpcanvas.SendMessage('Main Camera', 'setUniqueName', fpb.uniqueName);" +
 			"if(fpb.numberOfImages==undefined){fpb.numberOfImages=0};fpcanvas.SendMessage('Main Camera', 'setNumberOfImages', fpb.numberOfImages);" +
 			"if(fpb.imagePrefix==undefined){fpb.imagePrefix='not-found'};fpcanvas.SendMessage('Main Camera', 'setImagePrefix', fpb.imagePrefix);" +
@@ -326,76 +351,17 @@ public class downloadImages : MonoBehaviour {
 			"if(fpb.intensity){fpcanvas.SendMessage('Main Camera', 'setIntensity', fpb.intensity)};";
 
 		Application.ExternalEval (evalRendering);
+		*/
 
 	}
 
-	public void setUniqueName(string javascriptString)
-	{
-		javascriptString = System.Text.RegularExpressions.Regex.Replace(javascriptString, @"\s+", "");
-		variables.uniqueName = javascriptString;
-	}
-
-	public void setNumberOfImages(int javascriptInt)
-	{	imageDepth = javascriptInt;	}
-
-	public void setImagePrefix(string javascriptString)
-	{	imagePrefix = javascriptString;	}
-
-	public void setNumberingFormat(string javascriptString)
-	{	numberingFormat = javascriptString;	}
-
-	public void setPathToImages(string javascriptString)
-	{	
-		if (javascriptString.Substring (javascriptString.Length - 1) != "/") {
-			javascriptString = javascriptString + "/";
-		}
-		pathToImages = javascriptString;
-	}
-
-	public void setVoxelSizeX(float javascriptFloat){
-		voxelSize.x = javascriptFloat;
-	}
-
-	public void setVoxelSizeY(float javascriptFloat){
-		voxelSize.y = javascriptFloat;
-	}
-
-	public void setVoxelSizeZ(float javascriptFloat){
-		voxelSize.z = javascriptFloat;
-	}
-
-	public void setAtlasMode(string boolean){
-		atlasMode = (boolean=="true") ? true : false;
-	}
-
-	public void setSliceWidth(float javascriptFloat){
-		imageWidth = (int)javascriptFloat;
-	}
-
-	public void setSliceHeight(float javascriptFloat){
-		imageHeight = (int)javascriptFloat;
+	public void parseFpbJSON(string jsonString){
+		variables.fpbJSON = JsonUtility.FromJson<FpbJSON> (jsonString);
 	}
 
 	//  Check if there is a bookmark in the URL
 	public void setLoadFromBookmark(string boolean){
 		variables.loadBookmarkFromURL = (boolean=="true") ? true : false;
-	}
-
-	//  Optional rendering input variables
-	public void setOpacity(float javascriptFloat)
-	{	variables.defaultOpacity = javascriptFloat;	}
-
-	public void setThreshold(float javascriptFloat)
-	{	variables.defaultThreshold = javascriptFloat;	}
-
-	public void setIntensity(float javascriptFloat)
-	{	variables.defaultIntensity = javascriptFloat;	}
-
-	public void setURLbookmarkString(string javascriptString){
-		variables.setViewMemory(javascriptString);
-	}
-	public void setImageAlpha(string boolean){
-		variables.imageAlpha = (boolean=="true") ? true : false;
 	}
 
 	// Some efficient power-of-two rounders:
