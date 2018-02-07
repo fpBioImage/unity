@@ -32,6 +32,7 @@ public class variables : MonoBehaviour {
 	public static bool bookmarkHover = true;
 
 	public static bool offlineMode = true;
+	public static int volumeReadyState = 0;
 
 	public static FpbJSON fpbJSON = null;
 	public static FpbBookmark fpbBookmark = null;

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class downloadImages : MonoBehaviour {
 
-	public bool volumeReady = false;
 	public bool changingQuality = false;
 
 	public GameObject infoBox;
@@ -47,7 +46,6 @@ public class downloadImages : MonoBehaviour {
 
 	void Start () {
 		qualityButton.SetActive (false);
-
 		rayMarchMaterial = cube.GetComponent<Renderer> ().material;
 
 		if (!atlasMode) {
@@ -263,23 +261,24 @@ public class downloadImages : MonoBehaviour {
 
 		// Load the scene
 		infoText.text = "Click to start";
+		variables.freezeAll = false;
 		cube.SetActive (true);
 		qualityButton.SetActive (true);
-		volumeReady = true;
+		variables.volumeReadyState = 1;
 	}
 
 	void Update(){
-		if (volumeReady){
+		if (variables.volumeReadyState == 1){
 			if (Input.anyKeyDown) {
 				if (changingQuality && Input.GetKey (KeyCode.Mouse0)) {
 					infoBox.SetActive (false);
-					// AND THEN OPEN quality changer
+					// Then open the quality changer
 					qualityBox.SetActive(true);
 				} else {
 					infoBox.SetActive (false);
 				}
 				// Off you go! 
-				volumeReady = false;
+				variables.volumeReadyState = 2;
 			}
 		}
 	}
@@ -310,48 +309,6 @@ public class downloadImages : MonoBehaviour {
 		print ("Set image depth as " + imageDepth);
 		voxelSize = variables.fpbJSON.voxelSize; // this one might not work so well... 
 		print("Set voxel size as x:" + voxelSize.x + ", y:" + voxelSize.y + ", z:" + voxelSize.z);
-
-		/*
-		string evalInputs = "if(fpb.uniqueName==undefined){fpb.uniqueName='defaultName'};fpcanvas.SendMessage('Main Camera', 'setUniqueName', fpb.uniqueName);" +
-			"if(fpb.numberOfImages==undefined){fpb.numberOfImages=0};fpcanvas.SendMessage('Main Camera', 'setNumberOfImages', fpb.numberOfImages);" +
-			"if(fpb.imagePrefix==undefined){fpb.imagePrefix='not-found'};fpcanvas.SendMessage('Main Camera', 'setImagePrefix', fpb.imagePrefix);" +
-			"if(fpb.numberingFormat==undefined){fpb.numberingFormat='0000'};fpcanvas.SendMessage('Main Camera', 'setNumberingFormat', fpb.numberingFormat);" +
-			"if(fpb.pathToImages==undefined){fpb.pathToImages='not-found'};fpcanvas.SendMessage('Main Camera', 'setPathToImages', fpb.pathToImages);" +
-			"if(fpb.voxelSize.x==undefined){fpb.voxelSize.x=1};fpcanvas.SendMessage('Main Camera', 'setVoxelSizeX', fpb.voxelSize.x);" +
-			"if(fpb.voxelSize.y==undefined){fpb.voxelSize.y=1};fpcanvas.SendMessage('Main Camera', 'setVoxelSizeY', fpb.voxelSize.y);" +
-			"if(fpb.voxelSize.z==undefined){fpb.voxelSize.z=1};fpcanvas.SendMessage('Main Camera', 'setVoxelSizeZ', fpb.voxelSize.z);" + 
-			"if(fpb.atlasMode==undefined){fpb.atlasMode='false'};fpcanvas.SendMessage('Main Camera', 'setAtlasMode', fpb.atlasMode);" + 
-			"if(fpb.sliceWidth==undefined){fpb.sliceWidth=100};fpcanvas.SendMessage('Main Camera', 'setSliceWidth', fpb.sliceWidth);" +
-			"if(fpb.sliceHeight==undefined){fpb.sliceHeight=100};fpcanvas.SendMessage('Main Camera', 'setSliceHeight', fpb.sliceHeight);" + 
-			"if(fpb.imageAlpha==undefined){fpb.imageAlpha='false'};fpcanvas.SendMessage('Main Camera', 'setImageAlpha', fpb.imageAlpha);";
-
-		Application.ExternalEval (evalInputs);
-
-		// This works out if we need to load a bookmark from the URL:
-		string evalURL = "if(window.location.href.indexOf('b=') > -1){" +
-			"fpcanvas.SendMessage('Main Camera', 'setLoadFromBookmark', 'true');}";
-
-		Application.ExternalEval (evalURL);
-
-		if (variables.loadBookmarkFromURL) {
-			Application.ExternalEval("function getParameterByName(name, url) {" +
-				"if (!url) url = window.location.href;" +
-				"name = name.replace(/[\\[\\]]/g, '\\\\$&');" +
-				"var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)')," +
-				"results = regex.exec(url);" +
-				"if (!results) return null;" +
-				"if (!results[2]) return '';" +
-				"return decodeURIComponent(results[2].replace(/\\+/g, ' ')); }" +
-				"fpcanvas.SendMessage('Main Camera', 'setURLbookmarkString', getParameterByName('b'));" );
-		}
-
-		// The following variables are optional inputs
-		string evalRendering = "if(fpb.opacity){fpcanvas.SendMessage('Main Camera', 'setOpacity', fpb.opacity)};" +
-			"if(fpb.threshold){fpcanvas.SendMessage('Main Camera', 'setThreshold', fpb.threshold);}" +
-			"if(fpb.intensity){fpcanvas.SendMessage('Main Camera', 'setIntensity', fpb.intensity)};";
-
-		Application.ExternalEval (evalRendering);
-		*/
 
 	}
 

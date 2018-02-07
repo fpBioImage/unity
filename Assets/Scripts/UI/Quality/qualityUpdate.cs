@@ -19,16 +19,31 @@ public class qualityUpdate : MonoBehaviour {
 	private int _interpID;
 	private int _stepsID;
 
-
 	void Awake() {
 		setQuadSize ();
 	}
+
+	public void setXYFromBrowser(string jsonString){
+		resXY.value = float.Parse (jsonString);
+	}
+	public void setZFromBrowser(string jsonString){
+		resZ.value = float.Parse (jsonString);
+	}
+	public void setInterpFromBrowser(string jsonString){
+		interp.value = int.Parse (jsonString);
+	}
+	
 
 	// Use this for initialization
 	void Start () {
 		cubeMaterial = cube.GetComponent<Renderer> ().material;
 		_stepsID = Shader.PropertyToID ("_Steps");
 		_interpID = Shader.PropertyToID ("_Interp");
+		Application.ExternalEval ("var qualityExists = localStorage.getItem('fpb-quality');" + 
+			"if(qualityExists!=null) {" +
+			"fpcanvas.SendMessage('Full Screen Quad', 'setXYFromBrowser', localStorage.getItem('fpb-quality-resXY'));" +
+			"fpcanvas.SendMessage('Full Screen Quad', 'setZFromBrowser', localStorage.getItem('fpb-quality-resZ'));" +
+			"fpcanvas.SendMessage('Full Screen Quad', 'setInterpFromBrowser', localStorage.getItem('fpb-quality-interp'))};");
 		updateQuality ();
 	}
 
@@ -40,7 +55,21 @@ public class qualityUpdate : MonoBehaviour {
 		qualityBox.SetActive (true);
 	}
 	public void closeQualityBox(){
+		saveQualitySettingsToBrowser ();
 		qualityBox.SetActive (false);
+	}
+
+	public void saveQualitySettingsToBrowser(){
+		string evalMe = "localStorage.setItem('fpb-quality', 'true');" +
+			"localStorage.setItem('fpb-quality-resXY', '" + resXY.value + "');" + 
+			"localStorage.setItem('fpb-quality-resZ', '" + resZ.value + "');" + 
+			"localStorage.setItem('fpb-quality-interp', '" + interp.value + "');";
+		#if UNITY_EDITOR
+		// Should save quality settings to preferences file. 
+		#else
+		Application.ExternalEval (evalMe);
+		#endif
+		print ("Quality settings saved to browser for next visit.");
 	}
 
 	public void updateQuality(){

@@ -15,7 +15,7 @@ public class FpbJSON {
 		public float opacity;
 		public float intensity;
 		public float threshold;
-		public float rendering;
+		public int projection;
 
 		public string atlasMode; // note that bools are stored as strings...
 		public string imageAlpha;
@@ -44,7 +44,7 @@ public class FpbJSON {
 			opacity = 5.0f;
 			intensity = 1.0f;
 			threshold = 0.2f;
-			rendering = 1;
+			projection = 1;
 			atlasMode = "true";
 			imageAlpha = "true";
 		}

@@ -3129,7 +3129,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &534892300
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3622,7 +3622,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &599768186
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4916,8 +4916,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1980090532}
-        m_MethodName: updateRenderingMode
+      - m_Target: {fileID: 0}
+        m_MethodName: 
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12014,8 +12014,7 @@ MonoBehaviour:
   threshold: {fileID: 1892806683}
   projectionType: {fileID: 823776145}
   annotationBox: {fileID: 1878816934}
-  dummySelectable: {fileID: 74925990}
-  backgroundPanel: {fileID: 1132740030}
+  infoPanel: {fileID: 1132740030}
   annotationInputText: {fileID: 1987022593}
   annotationPlaceholder: {fileID: 596602556}
   annotationInputTitleText: {fileID: 2021982975}
@@ -12065,7 +12064,7 @@ MonoBehaviour:
   opacitySlider: {fileID: 2125419070}
   thresholdSlider: {fileID: 1892806683}
   intensitySlider: {fileID: 748560744}
-  renderingMode: {fileID: 0}
+  renderingMode: {fileID: 823776145}
   opacity: 1
   threshold: 0.1
   intensity: 0.75
@@ -12409,7 +12408,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2021982974
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13088,7 +13087,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2078520340
 RectTransform:
   m_ObjectHideFlags: 0

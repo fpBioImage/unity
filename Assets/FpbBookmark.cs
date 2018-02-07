@@ -27,6 +27,9 @@ public class FpbBookmark{
 
 	public string annotation;
 
+	private bool nullBookmark = false;
+	private int browserBookmarkNumber; 
+
 	public bool getSectionMode(){
 		return (sectionMode == "true") ? true : false;
 	}
@@ -46,6 +49,18 @@ public class FpbBookmark{
 	public FpbBookmark(){
 	}
 
+	public FpbBookmark(int nullInt){
+		nullBookmark = true;
+		browserBookmarkNumber = nullInt;
+	}
+
+	public bool isNullBookmark(){
+		return nullBookmark;
+	}
+
+	public int getBrowserBookmarkNumber(){
+		return browserBookmarkNumber;
+	}
 
 	/*
 	// Check annotation (1)

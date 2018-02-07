@@ -15,7 +15,7 @@ public class boxTexture : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyUp (KeyCode.H)) {
+		if (Input.GetKeyUp (KeyCode.H) && !variables.freezeAll) {
 			variables.showBindingBox = !variables.showBindingBox;
 
 			for (int r = 0; r < rend.Length; r++) {

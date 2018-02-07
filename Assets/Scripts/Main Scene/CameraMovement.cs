@@ -119,9 +119,6 @@ public class CameraMovement : MonoBehaviour {
 			}
 
 			// Keys
-			if (Input.GetKeyDown (KeyCode.Escape)) { // Escape maybe isn't the best key: used to exit full screen...
-				UnityEngine.SceneManagement.SceneManager.LoadScene ("home");
-			}
 			if (Input.GetKeyDown (KeyCode.F)) {
 				if (variables.freezeMouse) {
 					// lock pointer

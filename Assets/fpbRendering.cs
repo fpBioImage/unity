@@ -80,9 +80,10 @@ public class fpbRendering : MonoBehaviour {
 		updateTime = Time.time;
 	}
 
+	/*
 	public void updateRenderingMode(int newRendering){
 		_rayMarchMaterial.SetFloat(_renderID, (float)newRendering);
-	}
+	}*/
 
 	// More input variables
 	[Header("Game Objects")]
@@ -115,12 +116,14 @@ public class fpbRendering : MonoBehaviour {
 			_rayMarchMaterial.SetFloat (_opacityID, opacity); // Blending strength 
 			_rayMarchMaterial.SetFloat (_thresholdID, threshold); // alpha cutoff value
 			_rayMarchMaterial.SetFloat (_intensityID, intensity); // blends image a bit better
+			_rayMarchMaterial.SetFloat (_renderID, (float)renderingMode.value);
 
 		}
 	}
 
 	private void Update(){
 		// Pre-update
+		/*
 		if (Input.GetKeyDown (KeyCode.LeftControl) || Input.GetKeyDown (KeyCode.RightControl) ||
 			Input.GetKeyDown (KeyCode.LeftAlt) || Input.GetKeyDown (KeyCode.RightAlt) ||
 			Input.GetKeyDown (KeyCode.LeftApple) || Input.GetKeyDown (KeyCode.RightApple) ||
@@ -136,7 +139,7 @@ public class fpbRendering : MonoBehaviour {
 			Input.GetKeyUp (KeyCode.LeftWindows) || Input.GetKeyUp (KeyCode.RightWindows) ||
 			Input.GetKeyUp (KeyCode.LeftShift) || Input.GetKeyUp (KeyCode.RightShift)) {
 			variables.freezeAll = false;
-		} 	
+		} 	*/ // I can't remember what these things do, but should probably investigate it. 
 
 		if (!variables.freezeAll) {
 			opacity = opacitySlider.value * opacitySlider.value;
