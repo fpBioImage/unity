@@ -83,10 +83,10 @@ public class bookmarker : MonoBehaviour {
 			loadBookmark (urlBookmark);
 		} else {
 			// Load rendering paramters from webpage, or use default.
-			opacity.value = (variables.fpbJSON.opacity != null) ? variables.fpbJSON.opacity : 5.0f;
-			intensity.value = (variables.fpbJSON.intensity != null) ? variables.fpbJSON.intensity : 1.0f;
-			threshold.value = (variables.fpbJSON.threshold != null) ? variables.fpbJSON.threshold : 0.2f;
-			projectionType.value = (variables.fpbJSON.projection != null) ? variables.fpbJSON.projection : 1;
+			opacity.value = (variables.fpbJSON.opacity != -1.0f) ? variables.fpbJSON.opacity : 5.0f;
+			intensity.value = (variables.fpbJSON.intensity != -1.0f) ? variables.fpbJSON.intensity : 1.0f;
+			threshold.value = (variables.fpbJSON.threshold != -1.0f) ? variables.fpbJSON.threshold : 0.2f;
+			projectionType.value = (variables.fpbJSON.projection != -1) ? variables.fpbJSON.projection : 1;
 			state = 0;
 		}
 	}

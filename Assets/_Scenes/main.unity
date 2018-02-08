@@ -2188,8 +2188,8 @@ MonoBehaviour:
   pinchSpeed: 10
   translateSpeed: 10
   rotateSpeed: 3
-  cameraToMove: {fileID: 0}
-  lookDirection: {fileID: 0}
+  cameraToMove: {fileID: 1135988648}
+  lookDirection: {fileID: 1135988648}
 --- !u!1 &302883219
 GameObject:
   m_ObjectHideFlags: 0
@@ -6964,7 +6964,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0a846a8c614a2c43806cca01e135cfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeReady: 0
   changingQuality: 0
   infoBox: {fileID: 2138202503}
   infoText: {fileID: 1161066445}
@@ -11977,7 +11976,7 @@ MeshRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7b912151279a25345a521109922d5943, type: 2}
+  - {fileID: 2100000, guid: 1b470808c47f50445b62ce8ef5ac9838, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
