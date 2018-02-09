@@ -1,18 +1,11 @@
-unity-ray-marching
-==================
-
-Youtube preview
-https://youtu.be/4N5Ca-2rwZg
+#FPBioimage
+### For Developers
+Fork or download this repository to develop FPBioimage in Unity.
 
 
-Ray marching for rendering 3D noise in Unity 3D. Requires Unity 4.6.0 pro
+A demo website of FPBioimage integrated into a website is at [fpb.ceb.cam.ac.uk](http://fpb.ceb.cam.ac.uk). 
 
-Issues
-* The volume sometimes renders incorrectly when the cube volume is scaled incorrectly.
+###License
+First Person Bioimage (FPBioimage) is distributed under the Creative Commons Attribution - ShareAlike 4.0 International license. This means that, providing you credit the original software appropriately, you are free to copy, redistribute, remix, transform and build upon the software, as long as future contributions are distributed under the same license.
 
-Usage
-Open Scenes/scene to see a sample.
-
-1. Set your volume target size under Volume Width/Depth/Height. It's not recommended to go above 256 256 128 unless you have a lot of ram.
-2. Drag all your slices (sorted alphanumerically when started) into the Slices
-3. Adjust clipping using the clipping plane percentage or the clipping plane objects
+_Use of FPBioimage requires a citation of the original publication of the software in [Nature Photonics](https://doi.org/10.1038/nphoton.2016.273). If FPBioimage is used to share data published in an academic journal, the original publication must be acknowledged in the references section of the publication._
