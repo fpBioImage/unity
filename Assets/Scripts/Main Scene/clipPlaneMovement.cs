@@ -49,38 +49,10 @@ public class clipPlaneMovement : MonoBehaviour {
 		startPosition = transform.localPosition;
 		freezePlane = false;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (!variables.freezeAll) {
-			// Check if the plane is attached to the camera or the model
-			if (transform.parent == sceneCamera)
-				freezePlane = false;
-			else if (transform.parent == model.transform)
-				freezePlane = true;
 
-			// Only allow the plane to move if it is not frozen to the model
-			if (!freezePlane) {
-				if (Input.GetAxis ("ClipAxisX") != 0 || Input.GetAxis ("ClipAxisY") != 0 || Input.GetAxis ("ClipAxisZ") != 0) {
-					state = 1;
-				}
-
-				transform.localPosition -= Input.GetAxis ("ClipAxisZ") * new Vector3(0,0,1) * speed * Time.deltaTime;
-
-				rotationX -= Input.GetAxis ("ClipAxisX") * rotSpeed;
-				rotationY += Input.GetAxis ("ClipAxisY") * rotSpeed;
-
-				if (!variables.jamesMode) {
-					rotationX = ClampAngle (rotationX, -135f, 135f);
-					rotationY = ClampAngle (rotationY, -135f, 135f);
-				}
-
-				Quaternion xQuaternion = Quaternion.AngleAxis (rotationX, Vector3.up);
-				Quaternion yQuaternion = Quaternion.AngleAxis (rotationY, Vector3.right);
-
-				transform.localRotation = startRotation * xQuaternion * yQuaternion;
-			}
-
+	// Update called once per frame
+	void Update() {
+		if (!variables.freezeAll){
 			// Freeze the plane to the model
 			if (Input.GetKeyUp (KeyCode.X)) {
 				freezePlaneToModel ();
@@ -95,7 +67,39 @@ public class clipPlaneMovement : MonoBehaviour {
 		if (state == 1) FadeIn ();
 		if (state == 2)	countDown ();
 		if (state == 3)	FadeOut ();
+	}
 
+	// Fixed update to control movement
+	void FixedUpdate () {
+		if (!variables.freezeAll) {
+			// Check if the plane is attached to the camera or the model
+			if (transform.parent == sceneCamera)
+				freezePlane = false;
+			else if (transform.parent == model.transform)
+				freezePlane = true;
+
+			// Only allow the plane to move if it is not frozen to the model
+			if (!freezePlane) {
+				if (Input.GetAxis ("ClipAxisX") != 0 || Input.GetAxis ("ClipAxisY") != 0 || Input.GetAxis ("ClipAxisZ") != 0) {
+					state = 1;
+				}
+
+				transform.localPosition -= Input.GetAxis ("ClipAxisZ") * new Vector3 (0, 0, 1) * speed * Time.deltaTime;
+
+				rotationX -= Input.GetAxis ("ClipAxisX") * rotSpeed;
+				rotationY += Input.GetAxis ("ClipAxisY") * rotSpeed;
+
+				if (!variables.jamesMode) {
+					rotationX = ClampAngle (rotationX, -135f, 135f);
+					rotationY = ClampAngle (rotationY, -135f, 135f);
+				}
+
+				Quaternion xQuaternion = Quaternion.AngleAxis (rotationX, Vector3.up);
+				Quaternion yQuaternion = Quaternion.AngleAxis (rotationY, Vector3.right);
+
+				transform.localRotation = startRotation * xQuaternion * yQuaternion;
+			}
+		}
 	}
 
 	public void freezePlaneToModel(){

@@ -541,7 +541,7 @@ PlayerSettings:
   webGLAnalyzeBuildSize: 0
   webGLUseEmbeddedResources: 0
   webGLUseWasm: 0
-  webGLCompressionFormat: 1
+  webGLCompressionFormat: 0
   scriptingDefineSymbols:
     13: ALLOW_MEMORY_GROWTH=1
   platformArchitecture:

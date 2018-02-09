@@ -3475,6 +3475,7 @@ GameObject:
   m_Component:
   - component: {fileID: 594987083}
   - component: {fileID: 594987082}
+  - component: {fileID: 594987079}
   m_Layer: 0
   m_Name: FP Camera
   m_TagString: Untagged
@@ -3482,6 +3483,37 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &594987079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 594987078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88e7fe108e80b3f4485e25d07eaa99a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  opacitySpeed: 0.8
+  thresholdSpeed: 0.07
+  intensitySpeed: 0.2
+  opacityTouchSpeed: 80
+  thresholdTouchSpeed: 7
+  intensityTouchSpeed: 20
+  opacitySlider: {fileID: 2125419070}
+  thresholdSlider: {fileID: 1892806683}
+  intensitySlider: {fileID: 748560744}
+  renderingMode: {fileID: 823776145}
+  opacity: 1
+  threshold: 0.1
+  intensity: 0.75
+  volumetricCube: {fileID: 1980090527}
+  clipPlane: {fileID: 1420273494}
+  backClipPlane: {fileID: 107758797}
+  cubeTarget: {fileID: 1980090531}
 --- !u!20 &594987082
 Camera:
   m_ObjectHideFlags: 0
@@ -3511,10 +3543,10 @@ Camera:
   m_TargetTexture: {fileID: 8400000, guid: 7be4addf442b22547905fa8c083e214b, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
+  m_HDR: 0
   m_AllowMSAA: 1
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
@@ -6447,16 +6479,18 @@ MonoBehaviour:
   m_CaptionImage: {fileID: 0}
   m_ItemText: {fileID: 41453744}
   m_ItemImage: {fileID: 0}
-  m_Value: 1
+  m_Value: 2
   m_Options:
     m_Options:
-    - m_Text: Low
+    - m_Text: Very low
       m_Image: {fileID: 0}
-    - m_Text: Medium
+    - m_Text: Low (Old Mobile)
       m_Image: {fileID: 0}
-    - m_Text: High
+    - m_Text: Medium (PC)
       m_Image: {fileID: 0}
-    - m_Text: Top (risky!)
+    - m_Text: High (Graphics)
+      m_Image: {fileID: 0}
+    - m_Text: Top (Risky!)
       m_Image: {fileID: 0}
     - m_Text: Cutsom...
       m_Image: {fileID: 0}
@@ -6946,10 +6980,10 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
+  m_HDR: 0
   m_AllowMSAA: 1
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
@@ -11954,7 +11988,6 @@ GameObject:
   - component: {fileID: 1980090531}
   - component: {fileID: 1980090530}
   - component: {fileID: 1980090528}
-  - component: {fileID: 1980090532}
   - component: {fileID: 1980090529}
   m_Layer: 1
   m_Name: Cube
@@ -12040,36 +12073,6 @@ Transform:
   m_Father: {fileID: 294906943}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1980090532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1980090527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88e7fe108e80b3f4485e25d07eaa99a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  opacitySpeed: 0.8
-  thresholdSpeed: 0.07
-  intensitySpeed: 0.2
-  opacityTouchSpeed: 80
-  thresholdTouchSpeed: 7
-  intensityTouchSpeed: 20
-  opacitySlider: {fileID: 2125419070}
-  thresholdSlider: {fileID: 1892806683}
-  intensitySlider: {fileID: 748560744}
-  renderingMode: {fileID: 823776145}
-  opacity: 1
-  threshold: 0.1
-  intensity: 0.75
-  clipPlane: {fileID: 1420273494}
-  backClipPlane: {fileID: 107758797}
-  cubeTarget: {fileID: 1980090531}
 --- !u!1 &1987022591
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,9 +6,6 @@ using System.IO;
 
 public class fpbRendering : MonoBehaviour {
 	// Input variables, can be set in the Unity editor. 
-	[SerializeField]
-	private LayerMask volumeLayer;
-
 	[Header("Keyboard input")]
 	[SerializeField]
 	private float opacitySpeed = 0.8f;
@@ -39,8 +36,9 @@ public class fpbRendering : MonoBehaviour {
 	public float threshold = 0.2f;
 	public float intensity = 1.0f;
 
+	public GameObject volumetricCube;
 	private Material _rayMarchMaterial;
-	private bool updateRender = true;
+	private bool cameraFrozen = true;
 	private float updateTime;
 
 	private int _opacityID;
@@ -49,15 +47,18 @@ public class fpbRendering : MonoBehaviour {
 	private int _renderID;
 	private int _clipPlane1ID;
 
+	public bool triggerRender = false;
+	private int volumeLayer;
+
 	public void setFreezeAll(bool freezeAll){
 		variables.freezeAll = freezeAll;
 	}
-
-
+		
 	private void Start()
 	{
-		// set default rendering parameters. If necessary.
-		_rayMarchMaterial = GetComponent<Renderer> ().material;
+		// Get game object variables
+		_rayMarchMaterial = volumetricCube.GetComponent<Renderer> ().material;
+		volumeLayer = (1 << LayerMask.NameToLayer ("TransparentFX")) | (1 << LayerMask.NameToLayer ("Default"));
 
 		// Get Property IDs
 		_opacityID = Shader.PropertyToID("_Opacity");
@@ -66,24 +67,9 @@ public class fpbRendering : MonoBehaviour {
 		_renderID = Shader.PropertyToID ("_RenderMode");
 		_clipPlane1ID = Shader.PropertyToID ("_ClipPlane");
 
-		// Set default rendering options
-			// first, try to get parameters from bookmark url.
-			// then, try to get parameters from bookmark 0? 
-			// next, try to get parameters from javascript string
-			// if we still haven't got parameters, use the defaults.
-			
-		/*
-		opacitySlider.value = opacity;
-		intensitySlider.value = intensity;
-		thresholdSlider.value = threshold;*/ // These can all be set from bookmarking tab at Start() time. 
-
 		updateTime = Time.time;
 	}
-
-	/*
-	public void updateRenderingMode(int newRendering){
-		_rayMarchMaterial.SetFloat(_renderID, (float)newRendering);
-	}*/
+		
 
 	// More input variables
 	[Header("Game Objects")]
@@ -96,67 +82,39 @@ public class fpbRendering : MonoBehaviour {
 
 	private void LateUpdate()
 	{
-		// This is where all the actual rendering is done
-		if (updateRender) {
-			if (cubeTarget != null && clipPlane != null && clipPlane.gameObject.activeSelf) {
-				var p = new Plane (cubeTarget.InverseTransformDirection(clipPlane.forward), cubeTarget.InverseTransformPoint(clipPlane.position));
-				Vector3 scaledPlane = new Vector3 (p.normal.x * cubeTarget.localScale.x, p.normal.y * cubeTarget.localScale.y, p.normal.z * cubeTarget.localScale.z).normalized;
+		// Set material rendering properties
+		if (cubeTarget != null && clipPlane != null && clipPlane.gameObject.activeSelf) {
+			var p = new Plane (cubeTarget.InverseTransformDirection (clipPlane.forward), cubeTarget.InverseTransformPoint (clipPlane.position));
+			Vector3 scaledPlane = new Vector3 (p.normal.x * cubeTarget.localScale.x, p.normal.y * cubeTarget.localScale.y, p.normal.z * cubeTarget.localScale.z).normalized;
 
-				_rayMarchMaterial.SetVector (_clipPlane1ID, new Vector4 (scaledPlane.x, scaledPlane.y, scaledPlane.z, p.distance));
+			_rayMarchMaterial.SetVector (_clipPlane1ID, new Vector4 (scaledPlane.x, scaledPlane.y, scaledPlane.z, p.distance));
 
-				/*if (variables.sectionMode) {
-					_rayMarchMaterial.SetVector ("_ClipPlane2", new Vector4 (scaledBackPlane.x, scaledBackPlane.y, scaledBackPlane.z, p2.distance));
-				} else {
-					_rayMarchMaterial.SetVector ("_ClipPlane2", new Vector4 (0.0f, 0.0f, 0.0f, 50.0f));
-				}*/
+			/*if (variables.sectionMode) {
+				_rayMarchMaterial.SetVector ("_ClipPlane2", new Vector4 (scaledBackPlane.x, scaledBackPlane.y, scaledBackPlane.z, p2.distance));
 			} else {
-				_rayMarchMaterial.SetVector (_clipPlane1ID, Vector4.zero);
-			}
-				
-			_rayMarchMaterial.SetFloat (_opacityID, opacity); // Blending strength 
-			_rayMarchMaterial.SetFloat (_thresholdID, threshold); // alpha cutoff value
-			_rayMarchMaterial.SetFloat (_intensityID, intensity); // blends image a bit better
-			_rayMarchMaterial.SetFloat (_renderID, (float)renderingMode.value);
-
+				_rayMarchMaterial.SetVector ("_ClipPlane2", new Vector4 (0.0f, 0.0f, 0.0f, 50.0f));
+			}*/
+		} else {
+			_rayMarchMaterial.SetVector (_clipPlane1ID, Vector4.zero);
 		}
+			
+		_rayMarchMaterial.SetFloat (_opacityID, opacity); // Blending strength 
+		_rayMarchMaterial.SetFloat (_thresholdID, threshold); // alpha cutoff value
+		_rayMarchMaterial.SetFloat (_intensityID, intensity); // blends image a bit better
+		_rayMarchMaterial.SetFloat (_renderID, (float)renderingMode.value);
 	}
 
 	private void Update(){
-		// Pre-update
-		/*
-		if (Input.GetKeyDown (KeyCode.LeftControl) || Input.GetKeyDown (KeyCode.RightControl) ||
-			Input.GetKeyDown (KeyCode.LeftAlt) || Input.GetKeyDown (KeyCode.RightAlt) ||
-			Input.GetKeyDown (KeyCode.LeftApple) || Input.GetKeyDown (KeyCode.RightApple) ||
-			Input.GetKeyDown (KeyCode.LeftCommand) || Input.GetKeyDown (KeyCode.RightCommand) ||
-			Input.GetKeyDown (KeyCode.LeftWindows) || Input.GetKeyDown (KeyCode.RightWindows) ||
-			Input.GetKeyDown (KeyCode.LeftShift) || Input.GetKeyDown (KeyCode.RightShift)) {
-			variables.freezeAll = true;
-		}
-		if (Input.GetKeyUp (KeyCode.LeftControl) || Input.GetKeyUp (KeyCode.RightControl) ||
-			Input.GetKeyUp (KeyCode.LeftAlt) || Input.GetKeyUp (KeyCode.RightAlt) ||
-			Input.GetKeyUp (KeyCode.LeftApple) || Input.GetKeyUp (KeyCode.RightApple) ||
-			Input.GetKeyUp (KeyCode.LeftCommand) || Input.GetKeyUp (KeyCode.RightCommand) ||
-			Input.GetKeyUp (KeyCode.LeftWindows) || Input.GetKeyUp (KeyCode.RightWindows) ||
-			Input.GetKeyUp (KeyCode.LeftShift) || Input.GetKeyUp (KeyCode.RightShift)) {
-			variables.freezeAll = false;
-		} 	*/ // I can't remember what these things do, but should probably investigate it. 
-
 		if (!variables.freezeAll) {
+			// Update rendering values
 			opacity = opacitySlider.value * opacitySlider.value;
 			opacity += Input.GetAxis("OpacityAxis") * opacitySpeed * Time.deltaTime * opacity;
-			//opacity = clamp(opacity);
-			opacitySlider.value = Mathf.Sqrt(opacity);
 
 			threshold = thresholdSlider.value;
 			threshold += Input.GetAxis ("ThresholdAxis") * thresholdSpeed * Time.deltaTime;
-			//threshold = clamp(threshold);
-			thresholdSlider.value = threshold;
 
-			// would like to make the intensity slider logarithmic. Maybe quadratic is easiest. 
 			intensity = intensitySlider.value * intensitySlider.value;
 			intensity += Input.GetAxis ("IntensityAxis") * intensitySpeed * Time.deltaTime * intensity;
-			//intensity = clamp(intensity, 0.0f, 5.0f);
-			intensitySlider.value = Mathf.Sqrt (intensity);
 
 			if (Input.GetKeyUp (KeyCode.N)) {
 				variables.sectionMode = !variables.sectionMode;
@@ -166,6 +124,7 @@ public class fpbRendering : MonoBehaviour {
 				variables.sectionMode = false;
 			}
 
+			// Touch controls 
 			if (Input.touchCount == 3) {
 				// Store all touches
 				Touch touch0 = Input.GetTouch (0);
@@ -178,9 +137,7 @@ public class fpbRendering : MonoBehaviour {
 
 				// Change opacity and intensity
 				opacity += xMove * opacityTouchSpeed * opacity;
-				//opacity = clamp (opacity, 0.01f, 1.0f);
 				intensity += yMove * intensityTouchSpeed * intensity;
-				//intensity = clamp (intensity, 0.01f, 5.0f);
 
 				// Find the position in the previous frame of each touch.
 				Vector2 touch0PrevPos = touch0.position - touch0.deltaPosition;
@@ -208,17 +165,44 @@ public class fpbRendering : MonoBehaviour {
 				threshold = clamp (threshold);
 			}
 
+			// Update sliders based on the values from keyboard, touch, or mouse input
+			opacitySlider.value = Mathf.Sqrt(opacity);
+			thresholdSlider.value = threshold;
+			intensitySlider.value = Mathf.Sqrt (intensity);
+
+
 		}
 
-		// Continue updating renderer for 1s after any keypress
-		if (Input.GetAxis ("ClipAxisX")!=0 || Input.GetAxis ("ClipAxisY")!=0 || Input.GetAxis ("ClipAxisZ")!=0) {
-			updateTime = Time.time + 3;
-		} else if (Input.anyKey || (!variables.freezeMouse && (Input.GetAxis("Mouse X")!=0 || Input.GetAxis("Mouse Y")!=0) )) {
-			updateTime = Time.time;
+		// Check if we need to render a new image to the full screen quad
+		if ((Input.anyKey && !variables.freezeAll) || (!variables.freezeMouse && (Input.GetAxis ("Mouse X") != 0 || Input.GetAxis ("Mouse Y") != 0)) ||
+			variables.volumeReadyState == 0 || triggerRender || Input.GetAxis("Mouse ScrollWheel")!=0) {
+			triggerRender = false;
+			if (cameraFrozen) {
+				freezeCamera (false);
+			}
+			if (Input.GetAxis ("ClipAxisX") != 0 || Input.GetAxis ("ClipAxisY") != 0 || Input.GetAxis ("ClipAxisZ") != 0) {
+				updateTime = Time.time + 1.7f;
+			} else {
+				updateTime = (Time.time > updateTime) ? Time.time : updateTime;
+			}
+		} else if (!cameraFrozen && Time.time - updateTime > 0.1f) {
+			freezeCamera(true);
 		}
-		updateRender = Time.time - updateTime < 1;
 	}
 
+	private void freezeCamera(bool freezeCamera){
+		if (freezeCamera) {
+			// Freeze camera, so that we're not wasting rendering passes rendering the same image again and again! 
+			GetComponent<Camera> ().clearFlags = CameraClearFlags.Nothing;
+			GetComponent<Camera> ().cullingMask = 0;
+		} else {
+			// Unfreeze camera: start rendering again! 
+			GetComponent<Camera> ().cullingMask = volumeLayer;
+			GetComponent<Camera> ().clearFlags = CameraClearFlags.SolidColor;
+			GetComponent<Camera> ().backgroundColor = Color.clear;
+		}
+		cameraFrozen = freezeCamera;
+	}
 
 	// Helper functions
 	public float clamp (float input){

@@ -76,8 +76,8 @@ public class CameraMovement : MonoBehaviour {
 
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	// Fixed update to control camera movement
+	void FixedUpdate () {
 		if (!variables.freezeAll) {
 			if (Input.GetKeyDown (KeyCode.Space)) {
 				fastMode = !fastMode;

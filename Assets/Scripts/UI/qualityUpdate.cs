@@ -94,18 +94,21 @@ public class qualityUpdate : MonoBehaviour {
 
 		GetComponent<Renderer> ().material.mainTexture = fullScreenRT;
 		fpCamera.targetTexture = fullScreenRT;
+		fpCamera.GetComponent<fpbRendering>().triggerRender = true;
 
 		// Set preset box
 		if (resXY.value == 256.0f && resZ.value == 64.0f && interp.value == 0) {
 			preset.value = 0;
-		} else if (resXY.value == 768.0f && resZ.value == 150.0f && interp.value == 1) {
+		} else if (resXY.value == 400.0f && resZ.value == 90.0f && interp.value == 0){
 			preset.value = 1;
-		} else if (resXY.value == 1024.0f && resZ.value == 256.0f && interp.value == 1) {
+		} else if (resXY.value == 768.0f && resZ.value == 150.0f && interp.value == 1) {
 			preset.value = 2;
-		} else if (resXY.value == 2048.0f && resZ.value == 768.0f && interp.value == 2) {
+		} else if (resXY.value == 1024.0f && resZ.value == 256.0f && interp.value == 1) {
 			preset.value = 3;
-		} else {
+		} else if (resXY.value == 2048.0f && resZ.value == 768.0f && interp.value == 2) {
 			preset.value = 4;
+		} else {
+			preset.value = 5;
 		}
 			
 	}
@@ -117,30 +120,36 @@ public class qualityUpdate : MonoBehaviour {
 	public void presetValueChanged(int newValue){
 		switch (newValue) {
 		case 0:
-			// Low Quality
+			// Very Low Quality
 			resXY.value = 256.0f;
 			resZ.value = 64.0f;
 			interp.value = 0;
 			break;
 		case 1:
+			// Low Quality
+			resXY.value = 400.0f;
+			resZ.value = 90.0f;
+			interp.value = 0;
+			break;
+		case 2:
 			// Medium Quality
 			resXY.value = 768.0f;
 			resZ.value = 150.0f;
 			interp.value = 1;
 			break;
-		case 2:
+		case 3:
 			// High Quality
 			resXY.value = 1024.0f;
 			resZ.value = 256.0f;
 			interp.value = 1;
 			break;
-		case 3:
+		case 4:
 			// Top Quality (silly)
 			resXY.value = 2048.0f;
 			resZ.value = 768.0f;
 			interp.value = 2;
 			break;
-		case 4: default:
+		case 5: default:
 			// Custom
 			// Don't change any settings
 			break;

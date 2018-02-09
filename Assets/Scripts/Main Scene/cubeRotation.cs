@@ -35,7 +35,7 @@ public class cubeRotation : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if (!variables.showBindingBox) {freezeRotation = false;}
 
 		// Keyboard arrow control

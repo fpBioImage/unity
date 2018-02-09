@@ -248,7 +248,6 @@ Shader "Custom/Volume Ray Caster" {
 						ray_pos = pNear + k * ray_step;
 						//float4 worldRayPos = dot(float4(ray_pos-0.5f, 1.0f), _CubeScale);
 						bool doClip = dot(_ClipPlane, float4(ray_pos-0.5f, 1.0f)) > 0.0f;
-					
 
 						if (!doClip && k<_Steps && ray_pos.x > 0 && ray_pos.y > 0 && ray_pos.z > 0
 						  && ray_pos.x < 1 && ray_pos.y < 1 && ray_pos.z < 1){
