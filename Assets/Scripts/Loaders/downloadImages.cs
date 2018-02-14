@@ -264,6 +264,7 @@ public class downloadImages : MonoBehaviour {
 		variables.freezeAll = false;
 		cube.SetActive (true);
 		qualityButton.SetActive (true);
+		variables.triggerRender = true;
 		variables.volumeReadyState = 1;
 	}
 
@@ -273,7 +274,7 @@ public class downloadImages : MonoBehaviour {
 				if (changingQuality && Input.GetKey (KeyCode.Mouse0)) {
 					infoBox.SetActive (false);
 					// Then open the quality changer
-					qualityBox.SetActive(true);
+					GameObject.Find("Arrow Left").GetComponent<leftArrowControl>().arrowClicked();
 				} else {
 					infoBox.SetActive (false);
 				}

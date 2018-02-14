@@ -5,14 +5,13 @@ using UnityEngine.UI;
 
 public class qualityUpdate : MonoBehaviour {
 
-	public GameObject qualityBox;
+	public GameObject loadingQuality;
 	public Camera fpCamera;
 	public Slider resXY;
 	public Slider resZ;
 	public Dropdown interp;
 	public Dropdown preset;
 	public GameObject cube;
-	//public RenderTexture fullScreenRT;
 
 	private Material cubeMaterial;
 
@@ -42,23 +41,22 @@ public class qualityUpdate : MonoBehaviour {
 		Application.ExternalEval ("var qualityExists = localStorage.getItem('fpb-quality');" + 
 			"if(qualityExists!=null) {" +
 			"fpcanvas.SendMessage('Full Screen Quad', 'setXYFromBrowser', localStorage.getItem('fpb-quality-resXY'));" +
-			"fpcanvas.SendMessage('Full Screen Quad', 'setZFromBrowser', localStorage.getItem('fpb-quality-resZ'));" +
-			"fpcanvas.SendMessage('Full Screen Quad', 'setInterpFromBrowser', localStorage.getItem('fpb-quality-interp'))};");
+			"fpcanvas.SendMessage('Full Screen Quad', 'setZFromBrowser',  localStorage.getItem('fpb-quality-resZ'));" +
+			"fpcanvas.SendMessage('Full Screen Quad', 'setInterpFromBrowser', localStorage.getItem('fpb-quality-interp'));" +
+			"} else {" +
+			"fpcanvas.SendMessage('Full Screen Quad', 'setXYFromBroswer', 400.0);" +
+			"fpcanvas.SendMessage('Full Screen Quad', 'setZFromBrowser',  150.0);" +
+			"fpcavnas.SendMessage('Full Screen Quad', 'setInterpFromBrowser', 0);}");
+		
 		updateQuality ();
+		loadingQuality.GetComponent<Text> ().text = presetEnum() == 0 ? "Very Low" : presetEnum() == 1 ? "Low" : presetEnum() == 2 ? "Medium" :
+			presetEnum() == 3 ? "High" : presetEnum() == 4 ? "Very High" : presetEnum() == 5 ? "Top" : presetEnum() == 6 ? "Custom" : "Custom";
 	}
 
 	// Update is called once per frame
 	void Update () {
 	}
-
-	public void openQualityBox(){
-		qualityBox.SetActive (true);
-	}
-	public void closeQualityBox(){
-		saveQualitySettingsToBrowser ();
-		qualityBox.SetActive (false);
-	}
-
+		
 	public void saveQualitySettingsToBrowser(){
 		string evalMe = "localStorage.setItem('fpb-quality', 'true');" +
 			"localStorage.setItem('fpb-quality-resXY', '" + resXY.value + "');" + 
@@ -94,23 +92,28 @@ public class qualityUpdate : MonoBehaviour {
 
 		GetComponent<Renderer> ().material.mainTexture = fullScreenRT;
 		fpCamera.targetTexture = fullScreenRT;
-		fpCamera.GetComponent<fpbRendering>().triggerRender = true;
+		variables.triggerRender = true;
 
 		// Set preset box
+		preset.value = presetEnum();
+	}
+
+	private int presetEnum(){
 		if (resXY.value == 256.0f && resZ.value == 64.0f && interp.value == 0) {
-			preset.value = 0;
-		} else if (resXY.value == 400.0f && resZ.value == 90.0f && interp.value == 0){
-			preset.value = 1;
-		} else if (resXY.value == 768.0f && resZ.value == 150.0f && interp.value == 1) {
-			preset.value = 2;
-		} else if (resXY.value == 1024.0f && resZ.value == 256.0f && interp.value == 1) {
-			preset.value = 3;
+			return 0;
+		} else if (resXY.value == 400.0f && resZ.value == 100.0f && interp.value == 0){
+			return 1;
+		} else if (resXY.value == 450.0f && resZ.value == 150.0f && interp.value == 0) {
+			return 2;
+		} else if (resXY.value == 768.0f && resZ.value == 350.0f && interp.value == 0) {
+			return 3;
+		} else if (resXY.value == 1024.0f && resZ.value == 500.0f && interp.value == 1) {
+			return 4;
 		} else if (resXY.value == 2048.0f && resZ.value == 768.0f && interp.value == 2) {
-			preset.value = 4;
+			return 5;
 		} else {
-			preset.value = 5;
+			return 6;
 		}
-			
 	}
 
 	void LateUpdate(){
@@ -128,33 +131,40 @@ public class qualityUpdate : MonoBehaviour {
 		case 1:
 			// Low Quality
 			resXY.value = 400.0f;
-			resZ.value = 90.0f;
+			resZ.value = 100.0f;
 			interp.value = 0;
 			break;
 		case 2:
 			// Medium Quality
-			resXY.value = 768.0f;
+			resXY.value = 450.0f;
 			resZ.value = 150.0f;
-			interp.value = 1;
+			interp.value = 0;
 			break;
 		case 3:
 			// High Quality
-			resXY.value = 1024.0f;
-			resZ.value = 256.0f;
-			interp.value = 1;
+			resXY.value = 768.0f;
+			resZ.value = 350.0f;
+			interp.value = 0;
 			break;
 		case 4:
+			// Very high quality
+			resXY.value = 1024.0f;
+			resZ.value = 500.0f;
+			interp.value = 1;
+			break;
+		case 5:
 			// Top Quality (silly)
 			resXY.value = 2048.0f;
 			resZ.value = 768.0f;
 			interp.value = 2;
 			break;
-		case 5: default:
+		case 6: default:
 			// Custom
 			// Don't change any settings
 			break;
 		}
 		updateQuality ();
+		saveQualitySettingsToBrowser ();
 	}
 
 	void setQuadSize(){

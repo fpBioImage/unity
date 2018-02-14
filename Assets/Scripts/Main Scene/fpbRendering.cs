@@ -47,7 +47,6 @@ public class fpbRendering : MonoBehaviour {
 	private int _renderID;
 	private int _clipPlane1ID;
 
-	public bool triggerRender = false;
 	private int volumeLayer;
 
 	public void setFreezeAll(bool freezeAll){
@@ -58,7 +57,7 @@ public class fpbRendering : MonoBehaviour {
 	{
 		// Get game object variables
 		_rayMarchMaterial = volumetricCube.GetComponent<Renderer> ().material;
-		volumeLayer = (1 << LayerMask.NameToLayer ("TransparentFX")) | (1 << LayerMask.NameToLayer ("Default"));
+		volumeLayer = (1 << LayerMask.NameToLayer ("TransparentFX"));
 
 		// Get Property IDs
 		_opacityID = Shader.PropertyToID("_Opacity");
@@ -175,8 +174,8 @@ public class fpbRendering : MonoBehaviour {
 
 		// Check if we need to render a new image to the full screen quad
 		if ((Input.anyKey && !variables.freezeAll) || (!variables.freezeMouse && (Input.GetAxis ("Mouse X") != 0 || Input.GetAxis ("Mouse Y") != 0)) ||
-			variables.volumeReadyState == 0 || triggerRender || Input.GetAxis("Mouse ScrollWheel")!=0) {
-			triggerRender = false;
+			variables.triggerRender || Input.GetAxis("Mouse ScrollWheel")!=0) {
+			variables.triggerRender = false;
 			if (cameraFrozen) {
 				freezeCamera (false);
 			}

@@ -37,4 +37,5 @@ public class variables : MonoBehaviour {
 	public static FpbJSON fpbJSON = null;
 	public static FpbBookmark fpbBookmark = null;
 
+	public static bool triggerRender;
 }

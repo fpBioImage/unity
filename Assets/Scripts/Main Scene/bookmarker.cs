@@ -59,6 +59,8 @@ public class bookmarker : MonoBehaviour {
 	private FpbBookmark browserBookmark = null;
 	private int addingBookmarkNumber;
 
+	private bool saveBookmarkButtonPressed = false;
+
 	void Awake(){
 		// Check for bookmark in url:
 		Application.ExternalEval("if(window.location.href.indexOf('b=') > -1){fpcanvas.SendMessage('Cube', 'setBookmarkInURL', 'true');}");
@@ -95,7 +97,8 @@ public class bookmarker : MonoBehaviour {
 		if (state == 0) {
 			// Default state; wait for number to restore
 			if (!variables.freezeAll) {
-				if (Input.GetKeyUp (KeyCode.B)) {
+				if (Input.GetKeyUp (KeyCode.B) || saveBookmarkButtonPressed) {
+					saveBookmarkButtonPressed = false;
 					variables.freezeAll = true;
 					annotationInputTitleText.text = "Choose a number to save a bookmark. Esc to cancel";
 					annotationInputTitleText.gameObject.SetActive (true);
@@ -187,6 +190,20 @@ public class bookmarker : MonoBehaviour {
 		variables.freezeAll = true;
 		restoredAnnotationText.gameObject.SetActive (true);
 		infoPanel.SetActive (true);
+	}
+
+	public void saveBookmarkButtonPress(){
+		saveBookmarkButtonPressed = true;
+	}
+
+	public void restoreBookmarkButtonPress(){
+		if (state != 2) {
+			restoredAnnotationText.text = "Press a number to restore that bookmark.";
+			variables.freezeAll = true;
+			restoredAnnotationText.gameObject.SetActive (true);
+			infoPanel.SetActive (true);
+			state = 3;
+		}
 	}
 
 	private void loadBookmark(FpbBookmark bookmarkToLoad){
