@@ -2,6 +2,9 @@
 // adapted from a Cg example by Nvidia
 // http://developer.download.nvidia.com/SDK/10/opengl/samples.html
 // Gilles Ferrand, University of Manitoba / RIKEN, 2016–2017
+//
+// Adapted heavily for use in FPBioimage 2017
+// Marcus Fantham, University of Cambridge
 
 Shader "Custom/Volume Ray Caster" {
 	

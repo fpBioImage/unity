@@ -17,8 +17,8 @@ public class FpbJSON {
 		public float threshold = -1.0f;
 		public int projection = -1;
 
-		public string atlasMode; // note that bools are stored as strings...
-		public string imageAlpha;
+		public string atlasMode = "false"; // note that bools are stored as strings...
+		public string imageAlpha = "false";
 
 	public bool getAtlasMode(){
 		return (atlasMode == "true" || atlasMode == "1") ? true : false;
@@ -33,6 +33,7 @@ public class FpbJSON {
 
 	public FpbJSON(bool offlineMode){
 		if (offlineMode) {
+			/* // MOUSE
 			uniqueName = "mouse";
 			numberOfImages = 255;
 			sliceWidth = 336;
@@ -46,7 +47,15 @@ public class FpbJSON {
 			threshold = 0.2f;
 			projection = 1;
 			atlasMode = "true";
-			imageAlpha = "true";
+			imageAlpha = "true"
+			*/
+			// TEAPOT
+			uniqueName = "teapot";
+			numberOfImages = 111;
+			pathToImages = "C:\\Users\\carcu\\fpBioImage-website\\demo\\examples\\teapot-images\\";
+			imagePrefix = "teapot_z";
+			numberingFormat = "0000";
+			voxelSize = new Vector3 (1.0f, 1.0f, 2.0f);
 		}
 	}
 }
