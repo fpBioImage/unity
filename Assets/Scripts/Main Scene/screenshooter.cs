@@ -26,12 +26,14 @@ public class screenshooter : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// Keyboard inputs
-		if (Input.GetKeyUp (KeyCode.V)) {
-			takeSreenshot (false);
-		}
+		if (!variables.freezeAll) {
+			if (Input.GetKeyUp (KeyCode.V)) {
+				takeSreenshot (false);
+			}
 
-		if (Input.GetKeyUp (KeyCode.C)) {
-			takeSreenshot (true);
+			if (Input.GetKeyUp (KeyCode.C)) {
+				takeSreenshot (true);
+			}
 		}
 		
 	}

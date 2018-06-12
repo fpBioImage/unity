@@ -44,7 +44,7 @@ public class qualityUpdate : MonoBehaviour {
 			"fpcanvas.SendMessage('Full Screen Quad', 'setZFromBrowser',  localStorage.getItem('fpb-quality-resZ'));" +
 			"fpcanvas.SendMessage('Full Screen Quad', 'setInterpFromBrowser', localStorage.getItem('fpb-quality-interp'));" +
 			"} else {" +
-			"fpcanvas.SendMessage('Full Screen Quad', 'setXYFromBroswer', 400.0);" +
+			"fpcanvas.SendMessage('Full Screen Quad', 'setXYFromBroswer', 450.0);" +
 			"fpcanvas.SendMessage('Full Screen Quad', 'setZFromBrowser',  150.0);" +
 			"fpcavnas.SendMessage('Full Screen Quad', 'setInterpFromBrowser', 0);}");
 		
@@ -62,12 +62,12 @@ public class qualityUpdate : MonoBehaviour {
 			"localStorage.setItem('fpb-quality-resXY', '" + resXY.value + "');" + 
 			"localStorage.setItem('fpb-quality-resZ', '" + resZ.value + "');" + 
 			"localStorage.setItem('fpb-quality-interp', '" + interp.value + "');";
-		#if UNITY_EDITOR
+		//#if UNITY_EDITOR
 		// Should save quality settings to preferences file. 
-		#else
+		//#else
 		Application.ExternalEval (evalMe);
-		#endif
-		print ("Quality settings saved to browser for next visit.");
+		//#endif
+		//print ("Quality settings saved to browser for next visit.");
 	}
 
 	public void updateQuality(){
@@ -153,7 +153,7 @@ public class qualityUpdate : MonoBehaviour {
 			interp.value = 1;
 			break;
 		case 5:
-			// Top Quality (silly)
+			// Top Quality (OTT)
 			resXY.value = 2048.0f;
 			resZ.value = 768.0f;
 			interp.value = 2;
@@ -164,7 +164,6 @@ public class qualityUpdate : MonoBehaviour {
 			break;
 		}
 		updateQuality ();
-		saveQualitySettingsToBrowser ();
 	}
 
 	void setQuadSize(){

@@ -97,10 +97,10 @@ public class fpbRendering : MonoBehaviour {
 			_rayMarchMaterial.SetVector (_clipPlane1ID, Vector4.zero);
 		}
 			
-		_rayMarchMaterial.SetFloat (_opacityID, opacity); // Blending strength 
+		_rayMarchMaterial.SetFloat (_opacityID, opacity*2.0f); // Blending strength 
 		_rayMarchMaterial.SetFloat (_thresholdID, threshold); // alpha cutoff value
 		_rayMarchMaterial.SetFloat (_intensityID, intensity); // blends image a bit better
-		_rayMarchMaterial.SetFloat (_renderID, (float)renderingMode.value);
+		_rayMarchMaterial.SetInt (_renderID, renderingMode.value);
 	}
 
 	private void Update(){
@@ -174,7 +174,7 @@ public class fpbRendering : MonoBehaviour {
 
 		// Check if we need to render a new image to the full screen quad
 		if ((Input.anyKey && !variables.freezeAll) || (!variables.freezeMouse && (Input.GetAxis ("Mouse X") != 0 || Input.GetAxis ("Mouse Y") != 0)) ||
-			variables.triggerRender || Input.GetAxis("Mouse ScrollWheel")!=0) {
+			variables.triggerRender || Input.GetAxis("Mouse ScrollWheel")!=0 || Input.touchCount>0) {
 			variables.triggerRender = false;
 			if (cameraFrozen) {
 				freezeCamera (false);

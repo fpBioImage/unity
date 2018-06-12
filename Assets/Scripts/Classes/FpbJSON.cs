@@ -33,7 +33,7 @@ public class FpbJSON {
 
 	public FpbJSON(bool offlineMode){
 		if (offlineMode) {
-			/* // MOUSE
+			 // MOUSE
 			uniqueName = "mouse";
 			numberOfImages = 255;
 			sliceWidth = 336;
@@ -47,15 +47,17 @@ public class FpbJSON {
 			threshold = 0.2f;
 			projection = 1;
 			atlasMode = "true";
-			imageAlpha = "true"
-			*/
+			imageAlpha = "true";
+
 			// TEAPOT
+			/*
 			uniqueName = "teapot";
 			numberOfImages = 111;
 			pathToImages = "C:\\Users\\carcu\\fpBioImage-website\\demo\\examples\\teapot-images\\";
 			imagePrefix = "teapot_z";
 			numberingFormat = "0000";
 			voxelSize = new Vector3 (1.0f, 1.0f, 2.0f);
+			*/
 		}
 	}
 }

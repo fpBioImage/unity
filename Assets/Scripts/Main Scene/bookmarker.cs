@@ -50,6 +50,10 @@ public class bookmarker : MonoBehaviour {
 
 	public GameObject shareBookmarkText;
 
+	[Header("Other Elements")]
+	public GameObject debuggingPanel;
+	public GameObject starWars;
+
 	private InputField annotationInput;
 
 	private bool bookmarkInURL = false;
@@ -82,7 +86,8 @@ public class bookmarker : MonoBehaviour {
 		
 			Application.ExternalEval (evalMe);
 			state = 4; 
-			loadBookmark (urlBookmark);
+			if (urlBookmark != null)
+				loadBookmark (urlBookmark);
 		} else {
 			// Load rendering paramters from webpage, or use default.
 			opacity.value = (variables.fpbJSON.opacity != -1.0f) ? variables.fpbJSON.opacity : 5.0f;
@@ -118,7 +123,7 @@ public class bookmarker : MonoBehaviour {
 
 		} else if (state == 1) {
 			// Ready to add a bookmark
-			if (Input.GetKeyUp (KeyCode.Escape)) {
+			if (Input.GetKeyUp (KeyCode.Escape) || Input.GetKeyUp (KeyCode.Backspace)) {
 				variables.freezeAll = false;
 				restoredAnnotationText.gameObject.SetActive (false);
 				infoPanel.SetActive (false);
@@ -232,8 +237,10 @@ public class bookmarker : MonoBehaviour {
 
 	private void addBookmarkToBrowser(int bookmarkNumber){
 		FpbBookmark bookmarkToSave = saveBookmark ();
-		string string64ToSave = encodeBookmark (bookmarkToSave);
 
+		parseAnnotationText (annotationInputText.text);
+
+		string string64ToSave = encodeBookmark (bookmarkToSave);
 		#if UNITY_EDITOR
 		EditorPrefs.SetString("fpb-" + variables.fpbJSON.uniqueName + "-bookmark" + bookmarkNumber, string64ToSave);
 		print(string64ToSave);
@@ -246,6 +253,16 @@ public class bookmarker : MonoBehaviour {
 
 		annotationBox.SetActive (false);
 		annotationInputTitleText.text = "Saved bookmark " + bookmarkNumber.ToString() + " to the browser. Copy url to share!"; 
+	}
+
+	void parseAnnotationText(string annoText){
+		if (annoText.ToLower ().IndexOf ("james manton") > -1) {
+			variables.jamesMode = !variables.jamesMode;
+		} else if (annoText.ToLower ().IndexOf ("marcus fantham") > -1) {
+			debuggingPanel.SetActive (true);
+		} else if (annoText.ToLower ().IndexOf ("luke skywalker") > -1) {
+			starWars.SetActive(!starWars.activeSelf);
+		}
 	}
 
 	private FpbBookmark saveBookmark(){
@@ -276,7 +293,13 @@ public class bookmarker : MonoBehaviour {
 
 	public void getBookmarkFromURL(string urlBookmarkString64){
 		// Decode base-64 string
-		urlBookmark = decodeBookmark(urlBookmarkString64);
+		if (urlBookmarkString64.Substring (0, 5) == "xPosE") {
+			// Just load with defaults for now... 
+			urlBookmark = null;
+			//urlBookmark = decodeLegacyBookmark (urlBookmarkString64);
+		} else {
+			urlBookmark = decodeBookmark (urlBookmarkString64);
+		}
 	}
 
 	public void getBookmarkFromBrowser(string browserBookmarkString64){

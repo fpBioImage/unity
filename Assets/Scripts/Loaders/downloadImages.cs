@@ -270,7 +270,7 @@ public class downloadImages : MonoBehaviour {
 
 	void Update(){
 		if (variables.volumeReadyState == 1){
-			if (Input.anyKeyDown) {
+			if (Input.anyKeyDown || Input.touchCount > 0) {
 				if (changingQuality && Input.GetKey (KeyCode.Mouse0)) {
 					infoBox.SetActive (false);
 					// Then open the quality changer

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 /* 
@@ -53,6 +54,10 @@ public class CameraMovement : MonoBehaviour {
 
 	private float startSpeed;
 	private float startMouseSpeed;
+
+	public Button fpButton;
+	private Color normalColor = Color.white;
+	private Color pressedColor = new Color(200.0f / 255.0f, 200.0f / 255.0f, 200.0f / 255.0f, 1.0f);
 
 	// Use this for initialization
 	void Start () {
@@ -117,19 +122,16 @@ public class CameraMovement : MonoBehaviour {
 				transform.position -= 2000.0f * Input.GetAxis("Mouse X") * Camera.main.transform.right * Time.deltaTime * mouseSpeed / Screen.width;
 				transform.position -= 2000.0f * Input.GetAxis("Mouse Y") * Camera.main.transform.up * Time.deltaTime * mouseSpeed / Screen.height;
 			}
+		}
+	}
 
-			// Keys
-			if (Input.GetKeyDown (KeyCode.F)) {
-				if (variables.freezeMouse) {
-					// lock pointer
-					variables.freezeMouse = false;
-				} else {
-					// unlock pointer
-					variables.freezeMouse = true;
-				}
+	void Update(){
+		// Keys
+		if (!variables.freezeAll) {
+			if (Input.GetKeyUp (KeyCode.F)) {
+				toggleFreezeMouse ();
 			}
-
-
+				
 			// Touch controls: double-tap hides binding box
 			if (Input.touchCount == 1) { 
 				Touch touch0 = Input.GetTouch (0);
@@ -137,6 +139,18 @@ public class CameraMovement : MonoBehaviour {
 					variables.showBindingBox = !variables.showBindingBox;
 				}
 			}
+		}
+	}
+
+	public void toggleFreezeMouse(){
+		if (variables.freezeMouse) {
+			// lock pointer
+			fpButton.image.color = pressedColor;
+			variables.freezeMouse = false;
+		} else {
+			// unlock pointer
+			fpButton.image.color = normalColor;
+			variables.freezeMouse = true;
 		}
 	}
 
