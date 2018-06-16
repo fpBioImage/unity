@@ -167,6 +167,7 @@ public class qualityUpdate : MonoBehaviour {
 	}
 
 	void setQuadSize(){
+		// Requires full screen quad to be exactly 1 unit from camera in Z
 		float frustumHeight = 2.0f * Mathf.Tan (Camera.main.fieldOfView * 0.5f * Mathf.Deg2Rad);
 		float frustumWidth = frustumHeight * Camera.main.aspect;
 		transform.localScale = new Vector3 (frustumWidth, frustumHeight);
