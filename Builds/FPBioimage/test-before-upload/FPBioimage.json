@@ -1,8 +1,6 @@
 {
 "TOTAL_MEMORY": 1572864000,
 "dataUrl": "FPBioimage.data.unityweb",
-"wasmCodeUrl": "FPBioimage.wasm.code.unityweb",
-"wasmFrameworkUrl": "FPBioimage.wasm.framework.unityweb",
 "asmCodeUrl": "FPBioimage.asm.code.unityweb",
 "asmMemoryUrl": "FPBioimage.asm.memory.unityweb",
 "asmFrameworkUrl": "FPBioimage.asm.framework.unityweb",

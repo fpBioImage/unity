@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>fleur - FPBioimage Viewer</title>
+    <title>hotfly - FPBioimage Viewer</title>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
@@ -9,20 +9,20 @@
     <script type='text/javascript'>
       fpb = {
         pathToFPBioimage: "./test-before-upload",
+        objMode: "true",
         pathToImages: "./", // This is the path relative to this webpage
-        uniqueName: "fleur", // Give this image stack a unique name for bookmarking to work correctly
-        imagePrefix: "fleur_z", // The prefix of the image stack file names
+        uniqueName: "panMiddle", // Give this image stack a unique name for bookmarking to work correctly
+        imagePrefix: "panMiddle", // The prefix of the image stack file names
         numberingFormat: "0000", // eg. "000" for 000, 001, 002, 003 etc.
-        fileType: "png", // png or jpg
-        atlasMode: "true", // True if providing pre-built texture atlases. Needs to be a string.
-        voxelSize: {x: 1.0, y: 1.0, z: 1.0}, // This just needs to be a ratio of x:y:z voxel size
-        numberOfImages: 256, // Number of images in the stack
-        sliceWidth: 256, sliceHeight: 256, // The width and height of the image slices (before padding)
-        imageAlpha: "false", // True for exports from Icy for nice alpha blending
+        fileType: "obj", // png or jpg or obj
+        atlasMode: 'true', // True if providing pre-built texture atlases. Needs to be a string.
+        voxelSize: {x: 1.5909910133866978, y: 1.5909910133866978, z: 2.0000000000000002}, // This just needs to be a ratio of x:y:z voxel size
+        numberOfImages: 171, // Number of images in the stack
+        sliceWidth: 400, sliceHeight: 400, // The width and height of the image slices (before padding)
+        imageAlpha: 'false', // True for exports from Icy for nice alpha blending
         opacity: 5.0, // Optional rendering parameter
-        intensity: 1.5, // Optional rendering parameter
-        threshold: 0.05, // Optional rendering parameter
-        projection: 1	// Volume renderer for RGB (0 for max intensity, 2 for RGBA)
+        intensity: 1.0, // Optional rendering parameter
+        threshold: 0.2 // Optional rendering parameter
       }
     </script>
     <!-- END OF REQUIRED EDITS -->

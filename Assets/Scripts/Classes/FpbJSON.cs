@@ -11,6 +11,7 @@ public class FpbJSON {
 		public string imagePrefix;
 		public string numberingFormat;
 		public string pathToImages;
+		public string fileType = "png";
 		public Vector3 voxelSize;
 		public float opacity = -1.0f;
 		public float intensity = -1.0f;
@@ -19,7 +20,6 @@ public class FpbJSON {
 
 		public string atlasMode = "false"; // note that bools are stored as strings...
 		public string imageAlpha = "false";
-		public string objMode = "false";
 
 	public bool getAtlasMode(){
 		return (atlasMode == "true" || atlasMode == "1") ? true : false;
@@ -27,10 +27,6 @@ public class FpbJSON {
 
 	public bool getImageAlpha(){
 		return (imageAlpha == "true" || imageAlpha == "1") ? true : false;
-	}
-
-	public bool getObjMode(){
-		return (objMode == "true" || objMode == "1") ? true : false;
 	}
 
 	public FpbJSON(){

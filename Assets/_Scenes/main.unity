@@ -8452,7 +8452,7 @@ MonoBehaviour:
   pathToImages: C:\Users\carcu\Pictures\
   imagePrefix: panMiddle
   numberingFormat: 0000
-  objMode: 0
+  fileType: obj
   imageWidth: 336
   imageHeight: 255
   imageDepth: 255

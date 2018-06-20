@@ -18,7 +18,7 @@ public class downloadImages : MonoBehaviour {
 	public string pathToImages = "";
 	public string imagePrefix = "";
 	public string numberingFormat = "0000";
-	public bool objMode = false;
+	public string fileType = "png";
 
 	public int imageWidth = 1;
 	public int imageHeight = 1;
@@ -50,7 +50,7 @@ public class downloadImages : MonoBehaviour {
 		qualityButton.SetActive (false);
 		rayMarchMaterial = cube.GetComponent<Renderer> ().material;
 
-		if (!objMode) {
+		if (fileType != "obj") {
 			if (!atlasMode) {
 				print ("Loading by image slices");
 				infoText.text = "Downloading image slices...";
@@ -333,7 +333,7 @@ public class downloadImages : MonoBehaviour {
 	private void setVariables(){
 		Application.ExternalEval ("fpcanvas.SendMessage('Main Camera', 'parseFpbJSON', JSON.stringify(fpb));");
 
-		objMode = variables.fpbJSON.getObjMode();
+		fileType = variables.fpbJSON.fileType;
 
 		atlasMode = variables.fpbJSON.getAtlasMode();
 		pathToImages = variables.fpbJSON.pathToImages;
