@@ -8361,9 +8361,10 @@ MonoBehaviour:
   fullScreenQuad: {fileID: 1576032727}
   offlineMode: 0
   atlasMode: 1
-  pathToImages: C:\Users\carcu\fpBioImage-website\demo\examples\mouse-images\
-  imagePrefix: mouse_z
+  pathToImages: C:\Users\carcu\Pictures\
+  imagePrefix: panMiddle
   numberingFormat: 0000
+  objMode: 1
   imageWidth: 336
   imageHeight: 255
   imageDepth: 255

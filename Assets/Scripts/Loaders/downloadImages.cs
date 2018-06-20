@@ -18,6 +18,7 @@ public class downloadImages : MonoBehaviour {
 	public string pathToImages = "";
 	public string imagePrefix = "";
 	public string numberingFormat = "0000";
+	public bool objMode = false;
 
 	public int imageWidth = 1;
 	public int imageHeight = 1;
@@ -48,19 +49,44 @@ public class downloadImages : MonoBehaviour {
 		qualityButton.SetActive (false);
 		rayMarchMaterial = cube.GetComponent<Renderer> ().material;
 
-		if (!atlasMode) {
-			print ("Loading by image slices");
-			infoText.text = "Downloading image slices...";
-			StartCoroutine (loadBySlices ());
-		} else {
-			print ("Loading atlases directly");
-			infoText.text = "Downloading texture maps...";
-			for (int i = 0; i < numAtlases; i++) {
-				StartCoroutine (loadByAtlas (i));
+		if (!objMode) {
+			if (!atlasMode) {
+				print ("Loading by image slices");
+				infoText.text = "Downloading image slices...";
+				StartCoroutine (loadBySlices ());
+			} else {
+				print ("Loading atlases directly");
+				infoText.text = "Downloading texture maps...";
+				for (int i = 0; i < numAtlases; i++) {
+					StartCoroutine (loadByAtlas (i));
+				}
 			}
+		} else {
+			print ("Loading surface model");
+			infoText.text = "Downloading surface model...";
+			StartCoroutine (loadSurface ());
 		}
 	}
 
+	IEnumerator loadSurface(){
+		string surfacePath = pathToImages + imagePrefix + ".obj";
+		WWW wwS = new WWW (surfacePath);
+
+		while (!wwS.isDone) {
+			float downloadProgress = wwS.progress;
+			infoText.text = "Downloaded " + (downloadProgress).ToString ("P1"); 
+			yield return null;
+		}
+
+		yield return wwS;
+		GameObject surfaceModel = null;
+
+		if (string.IsNullOrEmpty (wwS.error)) {
+			//surfaceModel = OBJLoader.LoadOBJFile("Surface model", wwS.text);
+		} else {
+			FastObjImporter.Instance.ImportFromString (File.ReadAllText(surfacePath));
+		}
+	}
 
 	IEnumerator loadBySlices(){
 		//// THIS ALL NEEDS UPDATING. UNSUPPORTED FOR NOW. 
