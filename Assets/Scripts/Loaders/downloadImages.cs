@@ -29,6 +29,7 @@ public class downloadImages : MonoBehaviour {
 	private float numAtlases = 8.0f;
 
 	public GameObject cube;
+	public Material surfaceMaterial;
 	private Material rayMarchMaterial;
 
 
@@ -82,10 +83,20 @@ public class downloadImages : MonoBehaviour {
 		GameObject surfaceModel = null;
 
 		if (string.IsNullOrEmpty (wwS.error)) {
-			//surfaceModel = OBJLoader.LoadOBJFile("Surface model", wwS.text);
+			surfaceModel = FastObjImporter.Instance.ImportFromString (wwS.text);
 		} else {
-			FastObjImporter.Instance.ImportFromString (File.ReadAllText(surfacePath));
+			surfaceModel = FastObjImporter.Instance.ImportFromString (File.ReadAllText(surfacePath));
 		}
+
+		// Add material to surface
+		foreach (Renderer rend in surfaceModel.transform.GetChild(0).GetComponentsInChildren<Renderer>()) {
+			rend.material = surfaceMaterial;
+		}
+
+		surfaceModel.transform.SetParent (cube.transform.parent);
+		surfaceModel.transform.localScale *= 3.0f;
+		loadingComplete ();
+			
 	}
 
 	IEnumerator loadBySlices(){
@@ -284,14 +295,18 @@ public class downloadImages : MonoBehaviour {
 
 			cube.transform.localScale = cubeSize;
 
-			// Load the scene
-			infoText.text = "Click to start";
-			variables.freezeAll = false;
-			cube.SetActive (true);
-			qualityButton.SetActive (true);
-			variables.triggerRender = true;
-			variables.volumeReadyState = 1;
+			loadingComplete ();
 		}
+	}
+
+	void loadingComplete(){
+		// Load the scene
+		infoText.text = "Click to start";
+		variables.freezeAll = false;
+		cube.SetActive (true);
+		qualityButton.SetActive (true);
+		variables.triggerRender = true;
+		variables.volumeReadyState = 1;
 	}
 
 	void Update(){
@@ -318,6 +333,8 @@ public class downloadImages : MonoBehaviour {
 	private void setVariables(){
 		Application.ExternalEval ("fpcanvas.SendMessage('Main Camera', 'parseFpbJSON', JSON.stringify(fpb));");
 
+		objMode = variables.fpbJSON.getObjMode();
+
 		atlasMode = variables.fpbJSON.getAtlasMode();
 		pathToImages = variables.fpbJSON.pathToImages;
 		if (pathToImages.Substring (pathToImages.Length - 1) != "/") {
@@ -331,7 +348,7 @@ public class downloadImages : MonoBehaviour {
 		imageWidth = variables.fpbJSON.sliceWidth;
 		imageHeight = variables.fpbJSON.sliceHeight;
 		imageDepth = variables.fpbJSON.numberOfImages;
-		voxelSize = variables.fpbJSON.voxelSize; // this one might not work so well... 
+		voxelSize = variables.fpbJSON.voxelSize; 
 	}
 
 	public void parseFpbJSON(string jsonString){
