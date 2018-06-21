@@ -20,8 +20,11 @@ function nextPow2( aSize ){
   return Math.pow( 2, Math.ceil( Math.log( aSize ) / Math.log( 2 ) ) );
 }
 
-firstImage = fpb.pathToImages + "/" + fpb.imagePrefix + fpb.numberingFormat + ".png";
-
+if (fpb.fileType != "obj"){
+  firstImage = fpb.pathToImages + "/" + fpb.imagePrefix + fpb.numberingFormat + ".png";
+} else {
+  firstImage = fpb.pathToFPBioimage + "/logo.png";
+}
 function debounce(func, wait, immediate) {
   // Debounce function from https://john-dugan.com/javascript-debounce/
     var timeout;
@@ -45,10 +48,10 @@ function debounce(func, wait, immediate) {
 
 window.addEventListener('resize', debounce(function(){fpcanvas.SendMessage("Full Screen Quad", "updateQuality")}, 200));
 
-
 var img = new Image();
 
 img.onload = function(){
+
   var imHeight = img.height;
   var imWidth = img.width;
 
@@ -79,6 +82,10 @@ img.onload = function(){
     memorySize = 1073741824;
   } else {
     memorySize = 1761607680; // Large textures have disproportionaly large memory requirements
+  }
+
+  if (isNaN(memorySize)){
+    memorySize = 268435456; // 256MB
   }
 
   console.log("Total memory requested from browser: " + memorySize + " bytes (" + (memorySize/Math.pow(2,30)).toPrecision(4) + " GiB)");

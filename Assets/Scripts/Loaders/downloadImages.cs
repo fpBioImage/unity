@@ -100,10 +100,9 @@ public class downloadImages : MonoBehaviour {
 	}
 
 	IEnumerator loadBySlices(){
-		//// THIS ALL NEEDS UPDATING. UNSUPPORTED FOR NOW. 
 		// First, check that variables.slices is null. If not, we don't have
 		// to download the images again, and can skip straight to loading the scene. 
-			// load the first image, to determine sizes. 
+		// load the first image, to determine sizes. 
 		bool pngMode = true;
 
 		// First, calculate image size from first texture
@@ -228,12 +227,7 @@ public class downloadImages : MonoBehaviour {
 		cube.transform.localScale = cubeSize;
 
 		// Load the scene
-		infoText.text = "Click to start";
-		variables.freezeAll = false;
-		cube.SetActive (true);
-		qualityButton.SetActive (true);
-		variables.triggerRender = true;
-		variables.volumeReadyState = 1;
+		loadingComplete();
 	}
 
 	// LOAD BY ATLAS
