@@ -243,7 +243,8 @@ Shader "Custom/Volume Ray Caster" {
 				float3 ray_step = 1.7320508 * normalize(ray_dir) / _Steps;
 				float mean_max_voxel = 0.0;
 				float normalised_opacity = saturate(_Opacity * length(ray_step));
-				float iso_cutoff = _DataMin * (1+ _Opacity/8.0);
+				//float iso_cutoff = _DataMin * (1+ _Opacity/8.0);
+				float iso_cutoff = _Opacity/8.0; 
 				bool rainbowDebug = (_RainbowCube == 1) ? true : false;
 
 				float4 ray_col = 0;

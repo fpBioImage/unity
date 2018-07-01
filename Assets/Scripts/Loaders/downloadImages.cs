@@ -10,7 +10,6 @@ public class downloadImages : MonoBehaviour {
 	public GameObject infoBox;
 	public Text infoText;
 	public GameObject qualityButton;
-	public GameObject qualityBox;
 	public GameObject fullScreenQuad;
 
 	public bool offlineMode = false;

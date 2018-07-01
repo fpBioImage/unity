@@ -132,6 +132,7 @@ public sealed class FastObjImporter
 			{
 				sb.Remove(0, sb.Length);
 
+
 				// Start +1 for whitespace '\n'
 				sb.Append(text, start + 1, i - start);
 				start = i;
